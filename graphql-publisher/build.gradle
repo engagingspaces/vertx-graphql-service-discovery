@@ -17,10 +17,8 @@ task jarTest (type: Jar) {
 
 configurations {
     testOutput
-    sources
 }
 
 artifacts {
     testOutput jarTest
-    sources sourceJar
 }

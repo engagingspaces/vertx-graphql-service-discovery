@@ -20,11 +20,6 @@ subprojects {
 
     sourceCompatibility = 1.8
     archivesBaseName = "vertx-$name-$rootProject.version"
-
-    task sourceJar(type: Jar) {
-        from sourceSets.main.allJava
-        classifier "sources"
-    }
 }
 
 task wrapper(type: Wrapper) {

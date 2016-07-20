@@ -12,4 +12,4 @@ branches:
     - master
 
 script:
-- gradle clean assemble sourceJar test
+- gradle clean test
