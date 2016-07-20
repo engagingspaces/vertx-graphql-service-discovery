@@ -93,7 +93,7 @@ public interface GraphQLService extends ServiceType {
         String address = SchemaDefinition.ADDRESS_PREFIX + "." + rootQueryName;
         JsonObject meta = metadata == null ? new JsonObject() : metadata.copy();
 
-        // TODO Caching proxy ok? Publishing twice ok?
+        // TODO Caching proxy ok?
 
         final MessageConsumer<JsonObject> serviceConsumer;
         if (meta.getString("publisherId") == null) {
@@ -103,7 +103,7 @@ public interface GraphQLService extends ServiceType {
             serviceConsumer = null;
         }
 
-        // TODO Move to API gateway project
+        // For later use
         meta.put(SchemaRegistration.METADATA_QUERIES, schema.getQueryType().getFieldDefinitions().stream()
                 .map(GraphQLFieldDefinition::getName).collect(Collectors.toList()));
         meta.put(SchemaRegistration.METADATA_MUTATIONS, !schema.isSupportingMutations() ? Collections.emptyList() :
