@@ -12,4 +12,4 @@ branches:
     - master
 
 script:
-- mvn test -Droot.logging.level=INFO
+- gradle clean build
