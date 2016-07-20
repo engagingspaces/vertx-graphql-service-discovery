@@ -1,4 +1,4 @@
 # vertx-graphql-service-discovery
-Service discovery and querying of GraphQL services in Vert.x based microservices
 
-More here soon...
+[![Build Status](https://travis-ci.org/engagingspaces/vertx-graphql-service-discovery.svg?branch=master)](https://travis-ci.org/engagingspaces/vertx-graphql-service-discovery/)
+
