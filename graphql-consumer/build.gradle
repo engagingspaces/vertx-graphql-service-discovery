@@ -1,0 +1,10 @@
+
+dependencies {
+    compile project(':graphql-core')
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "io.vertx:vertx-unit:$vertxVersion"
+
+    testCompile project(path: ':graphql-publisher')
+    testCompile project(path: ':graphql-publisher', configuration: 'testOutput')
+}

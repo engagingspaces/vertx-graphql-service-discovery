@@ -1,0 +1,33 @@
+
+ext {
+    vertxVersion = '3.3.0'
+    graphqlVersion = '2.0.0'
+
+    junitVersion = '4.12'
+    mockitoJava8Version = '1.0.0-beta'
+    awaitilityVersion = '1.7.0'
+}
+
+group = 'io.engagingspaces'
+version = '0.8.2'
+
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = 1.8
+    archivesBaseName = "vertx-$name-$rootProject.version"
+
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier "sources"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+    distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}

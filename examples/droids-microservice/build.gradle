@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':graphql-publisher')
+    compile "io.vertx:vertx-core:$vertxVersion"
+}

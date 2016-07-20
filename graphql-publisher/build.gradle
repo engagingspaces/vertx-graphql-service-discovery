@@ -1,0 +1,26 @@
+
+dependencies {
+    compile project(':graphql-core')
+    compile "io.vertx:vertx-core:$vertxVersion"
+    compile "io.vertx:vertx-service-discovery:$vertxVersion"
+    compile "com.graphql-java:graphql-java:$graphqlVersion"
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "io.vertx:vertx-unit:$vertxVersion"
+}
+
+
+task jarTest (type: Jar) {
+    from sourceSets.test.output + sourceSets.test.allSource
+    classifier = 'test'
+}
+
+configurations {
+    testOutput
+    sources
+}
+
+artifacts {
+    testOutput jarTest
+    sources sourceJar
+}

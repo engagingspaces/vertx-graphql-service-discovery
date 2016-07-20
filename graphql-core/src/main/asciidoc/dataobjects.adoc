@@ -1,0 +1,111 @@
+= Cheatsheets
+
+[[ErrorLocation]]
+== ErrorLocation
+
+++++
+ Data object that holds the location of a graphql query error.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[column]]`column`|`Number (int)`|
++++
+@return the column where the error occurred
++++
+|[[line]]`line`|`Number (int)`|
++++
+@return the line where the error occurred
++++
+|===
+
+[[QueryError]]
+== QueryError
+
+++++
+ Data object that represents an error that occurred upon execution of a GraphQL query.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[errorType]]`errorType`|`String`|
++++
+Gets the type of the graphql execution error.
+ <p>
+ The possible types are determined by the `ValidationErrorType` enum defined in the GraphQL implementation
+ (refer to: https://github.com/graphql-java/graphql-java).
++++
+|[[locations]]`locations`|`Array of link:dataobjects.html#ErrorLocation[ErrorLocation]`|
++++
+@return the location(s) where the error occurred (if applicable)
++++
+|[[message]]`message`|`String`|
++++
+@return the error message
++++
+|===
+
+[[QueryResult]]
+== QueryResult
+
+++++
+ Immutable data object that holds the execution result of a GraphQL query.
+ <p>
+ If the query was successful the response is available as . Otherwise a list of
+  provides more detail on the failure.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`data`|`Json object`|
++++
+Gets the  response of a successful GraphQL query. If the query wasn't
+ successful an empty json object is returned.
++++
+|[[errors]]`errors`|`Array of link:dataobjects.html#QueryError[QueryError]`|
++++
+Gets the errors that occurred on query execution, if the GraphQL query was not successful.
++++
+|[[succeeded]]`succeeded`|`Boolean`|
++++
+@return <code>true</code> when the query was successful, <code>false</code> otherwise
++++
+|===
+
+[[SchemaReferenceData]]
+== SchemaReferenceData
+
+++++
+ Immutable data object that represents the state of a link when a
+ service discovery `usage` event occurs that matches a published schema.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[discoveryName]]`discoveryName`|`String`|
++++
+@return the service discovery name
++++
+|[[record]]`record`|`link:dataobjects.html#Record[Record]`|
++++
+Gets the service record of the service that is referenced.
++++
+|[[status]]`status`|`link:enums.html#Status[Status]`|
++++
+Gets the status of the link which can be either
+  or
++++
+|===
+
