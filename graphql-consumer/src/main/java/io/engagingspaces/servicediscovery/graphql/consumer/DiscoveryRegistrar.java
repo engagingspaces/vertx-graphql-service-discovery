@@ -58,7 +58,7 @@ public class DiscoveryRegistrar extends AbstractRegistrar<DiscoveryRegistration>
      * @param usageHandler    the handler for `usage` events
      * @return the discovery registration
      */
-    DiscoveryRegistration startListening(
+    protected DiscoveryRegistration startListening(
             ServiceDiscoveryOptions options, SchemaAnnounceHandler announceHandler, SchemaUsageHandler usageHandler) {
 
         ServiceDiscovery discovery = getOrCreateDiscovery(options, () -> {
@@ -75,7 +75,7 @@ public class DiscoveryRegistrar extends AbstractRegistrar<DiscoveryRegistration>
      *
      * @param options the service discovery options
      */
-    void stopListening(ServiceDiscoveryOptions options) {
+    protected void stopListening(ServiceDiscoveryOptions options) {
         eventManager.unregisterConsumer(options.getAnnounceAddress());
         eventManager.unregisterConsumer(options.getUsageAddress());
         closeServiceDiscovery(options.getName());
