@@ -79,7 +79,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
     /**
      * @return the name of the publisher associated with this registrar.
      */
-    String getPublisherId() {
+    protected String getPublisherId() {
         return publisherId;
     }
 
@@ -87,7 +87,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
      * @param options the service discovery options
      * @return the existing or created service discovery instance
      */
-    ServiceDiscovery getOrCreateDiscovery(ServiceDiscoveryOptions options) {
+    protected ServiceDiscovery getOrCreateDiscovery(ServiceDiscoveryOptions options) {
         return super.getOrCreateDiscovery(options, () -> null);
     }
 
@@ -103,7 +103,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
      * @return a completed clone of the provided partial {@link SchemaRegistration} and now includes
      * discovery options, registered service consumer, and registered schema event consumers
      */
-    SchemaRegistration register(
+    protected SchemaRegistration register(
             SchemaRegistration partialRegistration, ServiceDiscoveryOptions options,
             SchemaPublishedHandler<SchemaRegistration> publishedHandler,
             SchemaUnpublishedHandler<SchemaRegistration> unpublishedHandler) {
@@ -153,7 +153,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
      * @param closeAction  the action to perform for closing registered schema's
      * @param closeHandler the close handler
      */
-    void close(BiConsumer<SchemaRegistration, Handler<AsyncResult<Void>>> closeAction,
+    protected void close(BiConsumer<SchemaRegistration, Handler<AsyncResult<Void>>> closeAction,
                Handler<AsyncResult<Void>> closeHandler) {
 
         if (!registrations().isEmpty()) {
