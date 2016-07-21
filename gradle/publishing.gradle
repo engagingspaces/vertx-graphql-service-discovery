@@ -1,0 +1,83 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId project.name
+            from components.java
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+            pom.withXml {
+                asNode().children().last() + {
+                    def builder = delegate
+                    builder.name project.name
+                    builder.description projectDescription
+                    builder.url 'https://github.com/engagingspaces/vertx-graphql-service-discovery'
+                    builder.licenses {
+                        builder.license {
+                            builder.name 'The Apache Software License, Version 2.0'
+                            builder.url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            builder.distribution 'repo'
+                        }
+                    }
+                    builder.scm {
+                        builder.url 'scm:git@github.com/engagingspaces/vertx-graphql-service-discovery.git'
+                        builder.connection 'git@github.com/engagingspaces/vertx-graphql-service-discovery.git'
+                        builder.developerConnection 'git@github.com/engagingspaces/vertx-graphql-service-discovery.git'
+                    }
+                    builder.developers {
+                        builder.developer {
+                            builder.id 'aschrijver'
+                            builder.name 'Arnold Schrijver'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = "$bintray_user"
+    key = "$bintray_key"
+    publications = ['maven']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = "vertx-$project.name"
+        desc = projectDescription
+        userOrg = 'engagingspaces'
+        websiteUrl = 'https://github.com/engagingspaces/vertx-graphql-service-discovery'
+        issueTrackerUrl = 'https://github.com/engagingspaces/vertx-graphql-service-discovery/issues'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/engagingspaces/vertx-graphql-service-discovery.git'
+        labels = ['vertx', 'graphql', 'microservices', 'service-discovery', 'publisher']
+        githubRepo = 'engagingspaces/vertx-graphql-service-discovery'
+        githubReleaseNotesFile = 'README.md'
+        version {
+            released = new Date()
+            vcsTag = project.version
+        }
+    }
+}

@@ -36,8 +36,7 @@ public interface Registrar {
     /**
      * Gets the service discovery of the specified name, if it is managed by this registrar.
      * <p>
-     * The returned service discovery is wrapped
-     * in a {@link io.engagingspaces.graphql.servicediscovery.discovery.impl.ManagedServiceDiscovery}
+     * The returned service discovery is wrapped as a managed service discovery
      * so that a call to {@link ServiceDiscovery#close()} are forwarded to the registrar for handling.
      *
      * @param discoveryName the service discovery name

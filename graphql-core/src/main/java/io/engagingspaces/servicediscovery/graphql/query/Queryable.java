@@ -77,6 +77,7 @@ public interface Queryable {
      * Executes the GraphQL query on the GraphQL schema proxy using the provided variables.
      *
      * @param graphqlQuery  the graphql query
+     * @param variables     the query variables
      * @param resultHandler the result handler with the graphql query result on success, or a failure
      */
     void queryWithVariables(String graphqlQuery, JsonObject variables,

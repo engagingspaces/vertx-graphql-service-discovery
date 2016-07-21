@@ -1,3 +1,21 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+    }
+}
+
+apply plugin: 'maven-publish'
+
+publishing {
+    repositories {
+        maven {
+            url 'https://dl.bintray.com/engagingspaces/maven'
+        }
+    }
+}
 
 ext {
     vertxVersion = '3.3.0'
@@ -8,16 +26,16 @@ ext {
     awaitilityVersion = '1.7.0'
 }
 
-group = 'io.engagingspaces'
-version = '0.8.2'
-
 subprojects {
     apply plugin: 'java'
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
+    group = 'io.engagingspaces'
+    version = '0.8.2'
     sourceCompatibility = 1.8
     archivesBaseName = "vertx-$name-$rootProject.version"
 }

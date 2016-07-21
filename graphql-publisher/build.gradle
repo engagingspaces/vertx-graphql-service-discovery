@@ -1,3 +1,4 @@
+apply from: "$rootProject.projectDir/gradle/publishing.gradle"
 
 dependencies {
     compile project(':graphql-core')
@@ -8,7 +9,6 @@ dependencies {
     testCompile "junit:junit:$junitVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"
 }
-
 
 task jarTest (type: Jar) {
     from sourceSets.test.output + sourceSets.test.allSource

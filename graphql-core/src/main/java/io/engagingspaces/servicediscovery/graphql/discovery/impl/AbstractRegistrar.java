@@ -74,7 +74,8 @@ public abstract class AbstractRegistrar<T extends Registration> implements Regis
     /**
      * Gets an existing managed repository, or creates it.
      *
-     * @param options the service discovery options
+     * @param options      the service discovery options
+     * @param closeHandler the action to perform when {@code discovery.close()} is called
      * @return the managed service discovery
      */
     protected ServiceDiscovery getOrCreateDiscovery(ServiceDiscoveryOptions options, Action<Void> closeHandler) {
