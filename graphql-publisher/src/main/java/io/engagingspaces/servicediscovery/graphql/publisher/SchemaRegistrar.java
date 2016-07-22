@@ -100,8 +100,16 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
     }
 
     /**
-     * @return a completed clone of the provided partial {@link SchemaRegistration} and now includes
-     * discovery options, registered service consumer, and registered schema event consumers
+     * Registers a schema definition created by the
+     * {@link io.engagingspaces.servicediscovery.graphql.service.GraphQLService}.
+     * <p>
+     * The provided registration is cloned, completed with publisher-related information, registered and then returned.
+     *
+     * @param partialRegistration the partially completed schema registration
+     * @param options             the service discovery options to add
+     * @param publishedHandler    the event handler to invoke on schema published events
+     * @param unpublishedHandler  the event handler to invoke on schema unpublished events
+     * @return the completed schema registration
      */
     protected SchemaRegistration register(
             SchemaRegistration partialRegistration, ServiceDiscoveryOptions options,
