@@ -8,9 +8,11 @@
 This library allows you to publish GraphQL schema's as independent services in your Vert.x based microservices environment and execute queries from remote service clients over the (local or clustered) Vert.x event bus.
 The library deals with the transfer of GraphQL query string to the appropriate service, and the return of query Json-formatted query results, or a list of parse errors if the query failed.
 
+**Note**: Code samples on this page and the project implementation are in Java, but service discovery clients can be implemented in any JWM language supported by [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale).
+
 ## Table of contents
 
-- [About](#about)
+- [Technology](#technology)
   - [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale)
   - [GraphQL](#graphql---application-layer-query-language-specification)
   - [Vert.x and GraphQL: happy together!](#vertx-and-graphql-happy-together)
@@ -30,19 +32,20 @@ The library deals with the transfer of GraphQL query string to the appropriate s
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
 
-## About
+## Technology
 
-Vert.x GraphQL Service discovery is implemented in Java 8 and based on [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension of the recently released (as of version `3.3.0`) [Vert.x Discovery service library](http://vertx.io/docs/vertx-service-discovery/java/) (one of a set of microservices modules that come with this release) 
+Vert.x GraphQL Service discovery is implemented in Java 8 and based on the interesting and innovative technologies [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension of the recently released (as of version `3.3.0`) [Vert.x Discovery service library](http://vertx.io/docs/vertx-service-discovery/java/) (one of a range of different microservices modules that come with this release) 
 
 ### Vert.x - Building reactive polyglot applications at scale
 
-Vert.x is a toolkit that allows development of event-driven, non-blocking application code with ease and create highly scalable, concurrent applications.
+Vert.x was originally created by Tim Fox in 2011 while working for VMWare, and is now part of the [Eclipse Foundation](http://www.eclipse.org/org/foundation/) (see also [wikipedia](https://en.wikipedia.org/wiki/Vert.x)). Vert.x is a toolkit that allows development of event-driven, non-blocking application code with ease to create highly scalable, concurrent internet applications.
 
-With Vert.x you run your code in so-called Verticles that are guaranteed to run on the same thread (except when they are workers in a thread pool). This alleviates the developer from creating complex and error-prone concurrent Java core, and makes it easy to scale to all processor cores and communicate between verticles in a cluster (e.g. by using the [Hazelcast Cluster Manager](http://vertx.io/docs/vertx-hazelcast/java/) module or [Apache Ignite](http://vertx.io/docs/vertx-ignite/java/) cluster manager module)
+With Vert.x you run your code in so-called Verticles that are guaranteed to run on the same thread (except when they are workers in a thread pool). This alleviates the developer from creating complex and error-prone concurrent Java core, and makes it easy to scale to all processor cores and communicate between distributed verticles in a cloud-based cluster (e.g. by using the [Hazelcast Cluster Manager](http://vertx.io/docs/vertx-hazelcast/java/) module or the [Apache Ignite](http://vertx.io/docs/vertx-ignite/java/) cluster manager module)
 
-Also Vert.x is polyglot and enables you to write verticles using any JVM-based programming language (e.g. Java, JavaScript, Groovy, Ruby, Ceylon and Scala) after which they can seamlessly interoperate with verticles written in other languages.
+Also Vert.x is polyglot which enables you to write verticles using any JVM-based programming language (e.g. Java, JavaScript, Groovy, Ruby, Ceylon and Scala) after which they can seamlessly interoperate with verticles written in other languages.
 
-Finally Vert.x is very versatile and non-opinionated. Whenever possible it lets you choose your own technologies and practices. The toolkit consists of [many standard modules](http://vertx.io/docs/#explore) offering additional features that you can add as needed. You can already start by adding a dependency on [Vert.x Core](http://vertx.io/docs/vertx-core/java/) which is very light-weight and can run as a stand-alone service or fully embedded and hidden from clients.
+Finally Vert.x's modular toolkit design is very versatile and non-opinionated. Where possible it lets you choose your own technologies and development practices. The toolkit comes with [many standard modules](http://vertx.io/docs/#explore) out of the box that provide additional features that you can add as needed. 
+The additional modules are entirely optional. You can readily start with a dependency on just the light-weight [Vert.x Core](http://vertx.io/docs/vertx-core/java/) module, run it stand-alone or fully embedded, hidden from clients. And then spin up a full-blown Netty based HTTP server in just 3 lines of code (or in a single line if you value conciseness above readibility :wink:).
 
 #### More information
 
@@ -187,9 +190,115 @@ To build from source, first `git clone https://github.com/engagingspaces/vertx-g
 
 ## Publishing a GraphQL schema
 
+As mentioned this project is an extension to the [vertx-service-discovery](https://github.com/vert-x3/vertx-service-discovery) module and provides an additional service type `graphql-service` for publishing GraphQL schema definitions as services.
+
+To get started a schema needs to be published. This can be accomplished in multiple different ways, which each provide you with different levels of convenience versus control. But first you'll need to provide a `SchemaDefinition` that exposes an instance of [`GraphQLSchema`](https://github.com/graphql-java/graphql-java/blob/master/src/main/java/graphql/schema/GraphQLSchema.java):
+
+```java
+public class DroidsSchema implements SchemaDefinition {
+
+    public static DroidsSchema get() {
+        return new DroidsSchema();
+    }
+
+    @Override
+    public GraphQLSchema schema() {
+        return droidsSchema;
+    }
+    
+    static final GraphQLObjectType queryType = newObject()
+            .name("QueryType") // Query name == graphql service name. Used as suffix in service proxy address
+            .field(newFieldDefinition()
+                    .name("droid")
+                    .type(droidType)
+                    .argument(newArgument()
+                            .name("id")
+                            .description("id of the droid")
+                            .type(new GraphQLNonNull(GraphQLString))
+                            .build())
+                    .dataFetcher(DroidsData.getDroidDataFetcher())
+                    .build())
+            .build();
+
+    static final GraphQLSchema droidsSchema = GraphQLSchema.newSchema()
+            .query(queryType)
+            .build();
+}
+```
+
 ### Using a `SchemaPublisher` implementation
 
+Most convenient and easy to use is publication of GraphQL services using a [`SchemaPublisher`](https://github.com/engagingspaces/vertx-graphql-service-discovery/blob/master/graphql-publisher/src/main/java/io/engagingspaces/servicediscovery/graphql/publisher/SchemaPublisher.java).
+
+A schema publisher is implemented as an interface so you can attach it to any class without limiting its extensibility (e.g. your verticle can still derive from `AbstractVerticle`). The only requirement is that you provide a valid instance of a `SchemaRegistrar` from the overridden `SchemaPublisher.schemaRegistrar()` method.
+
+The registrar will manage the state of the publisher, consisting of a list of `SchemaRegistration` items for each published GraphQL schema, the service discoveries (one or more) to which the services are published, a `MessageConsumer` for the service implementation as well as message consumers for schema-related (`publish` and `unpublish`) service discovery events.
+
+But providing the instance is all that's needed to get you started:
+
+```java
+public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DroidsServer.class);
+    private SchemaRegistrar registrar;  // need to keep hold of registrar reference
+
+    @Override
+    public void start(Future<Void> startFuture) {
+        registrar = SchemaRegistrar.create(vertx);
+        SchemaPublisher.publishAll(this, new ServiceDiscoveryOptions().setName("my-graphql-publisher"), rh -> {
+            if (rh.succeeded()) {
+                LOG.info("Published Droids schema to StarWars world...");
+                startFuture.complete();
+            } else {
+                startFuture.fail(rh.cause());
+            }
+        }, DroidsSchema.get());
+    }
+
+    @Override
+    public void schemaPublished(SchemaRegistration registration) {
+        LOG.info("Schema " + registration.getSchemaName() + " is now " + registration.getRecord().getStatus());
+    }
+
+    @Override
+    public void schemaUnpublished(SchemaRegistration registration) {
+        LOG.info("Schema " + registration.getSchemaName() + " was " + registration.getRecord().getStatus());
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) {
+        SchemaPublisher.close(this, rh -> {
+            if (rh.succeeded()) {
+                stopFuture.complete();
+            } else {
+                stopFuture.fail(rh.cause());
+            }
+        });
+    }
+
+    @Override
+    public SchemaRegistrar schemaRegistrar() {
+        return registrar;  // provide a valid instance here..
+    }
+}
+```
+
 ### Using the `GraphQLService` directly
+
+Alternatively you can publish a GraphQL schema directly by invoking a static method on `GraphQLService` and waiting for the result handler to return the schema registration:
+
+```java
+GraphQLService.publish(vertx, serviceDiscovery, schemaDefinition, metadata, rh -> {
+    if (rh.succeeded()) {
+        // Return the schema registration that is the result
+        resultHandler.handle(Future.succeededFuture(rh.result()));
+    } else {
+        resultHandler.handle(Future.failedFuture(rh.cause()));
+    }
+});
+```
+
+When publishing this way without using a schema publisher be aware that you must manually manage the resources (e.g. unregister message consumer, creating/closing service discoveries) yourself as well as create your own handlers for `publish` and `unpublish` events. Refer to the [Vert.x Service discovery](http://vertx.io/docs/vertx-service-discovery/java/) documentation for more info.
 
 ## Consuming and querying a GraphQL service
 
