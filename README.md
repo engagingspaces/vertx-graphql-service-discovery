@@ -177,3 +177,9 @@ To build from source, first `git clone https://github.com/engagingspaces/vertx-g
 ## Acknowledgments
 
 This library was made possible due to many great efforts in the open-source community, but especially to the works of the Vert.x team (Tim Fox, Clement Escoffier, Paulo Lopes, Julien Viet et al), the GraphQL team at Facebook (Lee Byron et al), and Andreas Marek who initiated the graphql-java on Github and from whom the StarWars test data was adapted.
+
+## License
+
+This project [vertx-graphql-service-discovery](https://github.com/engagingspaces/vertx-graphql-service-discovery) is licensed under the [Apache Commons v2.0](https://github.com/engagingspaces/vertx-graphql-service-discovery/LICENSE) license.
+
+Copyright &copy; 2016 Arnold Schrijver and [contributors](https://github.com/engagingspaces/vertx-graphql-service-discovery/graphs/contributors)
