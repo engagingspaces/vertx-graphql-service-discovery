@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = '0.7.6.201602180812'
+    toolVersion = '0.7.7.201606060606'
 }
 
 jacocoTestReport {
@@ -12,16 +12,50 @@ jacocoTestReport {
 
     reports {
         xml.enabled = true
+        xml.destination "${buildDir}/test-results/jacoco/${archivesBaseName}.xml"
         csv.enabled = false
         html.enabled = true
         html.destination "$buildDir/jacocoHtml"
     }
 
-    // Workaround for exclusions as, instructions in JaCoCo gradle manual do not appear to work.
+    // Workaround for exclusions, as instructions in JaCoCo gradle manual do not appear to work.
     // See: http://liviutudor.com/2016/02/11/jacoco-gradle-excluding-source-files-and-classes/
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: ['**/*VertxEBProxy**', '**/*VertxProxyHandler**'])
         })
+    }
+}
+
+configurations {
+    codacy
+}
+
+task uploadCoverageToCodacy(type: JavaExec, dependsOn : jacocoTestReport) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/test-results/jacoco/${archivesBaseName}.xml"
+    ]
+}
+
+task (codacyDepsize) << {
+    def size = 0;
+    configurations.codacy.collect { it.length() / (1024 * 1024) }.each { size += it }
+    println "Total dependencies size: ${Math.round(size * 100) / 100} Mb"
+
+    configurations
+            .codacy
+            .sort { -it.length() }
+            .each { println "${it.name} : ${Math.round(it.length() / (1024) * 100) / 100} kb" }
+}
+
+task (codacyLocs) << {
+    configurations.codacy.each {
+        String jarName = it
+        println jarName
     }
 }
