@@ -10,10 +10,50 @@ The library deals with the transfer of GraphQL query string to the appropriate s
 
 ## Table of contents
 
+- [About](#about)
+  - [Vert.x - Building reactive polyglot applications at scale](#vertx---building-reactive-polyglot-applications-at-scale)
+  - [GraphQL - Application layer query language specification](#graphql---application-layer-query-language-specification)
 - [Getting started](#getting-started)
   - [Using with Gradle](#using-with-gradle)
   - [Using with Maven](#using-with-maven)
   - [Building from source](#building-from-source)
+
+## About
+
+Vert.x GraphQL Service discovery is implemented in Java 8 and based on [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension of the recently released (as of version `3.3.0`) [Vert.x Discovery service library](http://vertx.io/docs/vertx-service-discovery/java/) (one of a set of microservices modules that come with this release) 
+
+### Vert.x - Building reactive polyglot applications at scale
+
+
+
+### GraphQL - Application layer query language specification
+
+The [GraphQL specification](http://graphql.org/) and a [reference implementation in Javascript](https://github.com/graphql/graphql-js) were released to the open-source community by Facebook in 2015 after using it internally in production for several years as data query language and runtime to interact with their many services.
+
+GraphQL provides a new and interesting way of exposing the data in your application layer to clients, that can yield significant benefits over more 'traditional' REST and HATEOAS styles of communication, especially when compared to large and complex REST API designs, with many endpoints and URL parameters.
+
+GraphQL allows you to:
+
+- Expose the data/domain model of your application by defining one or more server-side GraphQL schema's
+  - Instead of many REST endpoints, there can be just one endpoint that recieves all client-side queries
+- Query the exposed data model by sending queries in a comprehensive query language to receive json response
+  - Instead of having many query parameters, or additional endpoints, clients specify the expected data format in the query
+- Decouple back-end and front-end development processes, having each programming against a unified data model
+  - Instead of a REST API exposing increasingly more denormalized entry points the API data model stays clean, unpolluted and reflects the solution domain
+  - Instead of front-end developers having to wait for endpoints to be delivered on the back-end, they can define queries themselves for any additional (denormalized) view they need
+- Optimize the communication between clients and servers and greatly simplify caching strategies
+ - Instead of many HTTP requests to receive some aggregate data set, a full resultset can be retrieved in a single query call
+ - Instead of complex cache storage and pruning strategies, the GraphQL query language allows much easier cache management
+  
+GraphQL is not a golden hammer however, and there still valid cases to have more restful API designs. And also GraphQL is still relatively new and under heavy development. So inform yourself well. 
+
+#### More information
+
+There are many interesting source of information on GraphQL to be found on the internet, like using it together with [Relay]() and [ReactJS]() to create nicely decoupled dynamic web front-ends and back-ends that communicate very efficiently.
+
+But to get you started, here a couple of interesting resources to check:
+
+- [Introduction to GraphQL](https://learngraphql.com/basics/introduction) by Kadira
 
 ## Getting started
 
