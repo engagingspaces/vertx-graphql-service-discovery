@@ -59,8 +59,8 @@ publishing {
 }
 
 bintray {
-    user = "$bintray_user"
-    key = "$bintray_key"
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
     publications = ['maven']
     publish = true
     pkg {
