@@ -18,6 +18,17 @@ The library deals with the transfer of GraphQL query string to the appropriate s
   - [Using with Gradle](#using-with-gradle)
   - [Using with Maven](#using-with-maven)
   - [Building from source](#building-from-source)
+- [Publishing a GraphQL schema](#publishing-a-graphql-schema)
+    - [Using a `SchemaPublisher` implementation](#using-a-schema-publisher-implementation)
+    - [Using the `GraphQLService` directly](#using-the-graphqlservice-directly)
+- [Consuming and querying a GraphQL service](#consuming-and-querying-a-graphql-service)
+    - [Using a `SchemaConsumer` implemention](#using-a-schema-consumer-implementation)
+    - [Using the `GraphQLClient` directly](#using-the-graphqlclient-directly)
+- [Compatibility](#compatibility)
+- [Known issues](#known-issues)
+- [Contributing](#contributing)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
 
 ## About
 
@@ -173,6 +184,24 @@ To build from source, first `git clone https://github.com/engagingspaces/vertx-g
 ```
 ./gradlew clean build
 ```
+
+## Publishing a GraphQL schema
+
+### Using a `SchemaPublisher` implementation
+
+### Using the `GraphQLService` directly
+
+## Consuming and querying a GraphQL service
+
+### Using a `SchemaConsumer` implemention
+
+### Using the `GraphQLClient` directly
+
+## Compatibility
+
+## Known issues
+
+## Contributing
 
 ## Acknowledgments
 
