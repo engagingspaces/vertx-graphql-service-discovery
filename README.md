@@ -207,7 +207,7 @@ public class DroidsSchema implements SchemaDefinition {
     }
     
     static final GraphQLObjectType queryType = newObject()
-            .name("QueryType") // Query name == graphql service name. Used as suffix in service proxy address
+            .name("QueryType") // Query name == graphql service name. Suffix of proxy address
             .field(newFieldDefinition()
                     .name("droid")
                     .type(droidType)
@@ -245,7 +245,8 @@ public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
     @Override
     public void start(Future<Void> startFuture) {
         registrar = SchemaRegistrar.create(vertx);
-        SchemaPublisher.publishAll(this, new ServiceDiscoveryOptions().setName("my-graphql-publisher"), rh -> {
+        SchemaPublisher.publishAll(this, new ServiceDiscoveryOptions()
+                .setName("my-graphql-publisher"), rh -> {
             if (rh.succeeded()) {
                 LOG.info("Published Droids schema to StarWars world...");
                 startFuture.complete();
@@ -257,12 +258,14 @@ public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
 
     @Override
     public void schemaPublished(SchemaRegistration registration) {
-        LOG.info("Schema " + registration.getSchemaName() + " is now " + registration.getRecord().getStatus());
+        LOG.info("Schema " + registration.getSchemaName() + " is now " + 
+                registration.getRecord().getStatus());
     }
 
     @Override
     public void schemaUnpublished(SchemaRegistration registration) {
-        LOG.info("Schema " + registration.getSchemaName() + " was " + registration.getRecord().getStatus());
+        LOG.info("Schema " + registration.getSchemaName() + " was " + 
+                registration.getRecord().getStatus());
     }
 
     @Override
