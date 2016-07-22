@@ -305,15 +305,149 @@ When publishing this way without using a schema publisher be aware that you must
 
 ## Consuming and querying a GraphQL service
 
+Just as with publishing there are multiple ways to consume a GraphQL service that was published. Most convenient once again is using a `SchemaConsumer`, but you can also query directly using one of the `GraphQLClient` static methods or even by using standard [vertx-service-discovery](https://github.com/vert-x3/vertx-service-discovery) to get to a `Queryable` service proxy manually. 
+
 ### Using a `SchemaConsumer` implemention
+
+Easiest is to implement the `SchemaConsumer` interface on the class where you want to retrieve query results. The only requirement is that you provide a valid instance of a `DiscoveryRegistrar` that manages creation / closing of (one or more) service discoveries and registration / unregistration of service discovery event handlers.
+
+When using the consumer the standard `announce` and `usage` discovery events from the managed service discoveries are caught and - when they are related to a `graphql-service` - translates them to the more convenient `schemaDiscoveryEvent` and `schemaReference` event respectively.
+
+Let's see how this looks like in code:
+
+```java
+package org.example.servicediscovery.client;
+
+import io.engagingspaces.servicediscovery.graphql.client.GraphQLClient;
+import io.engagingspaces.servicediscovery.graphql.consumer.DiscoveryRegistrar;
+import io.engagingspaces.servicediscovery.graphql.consumer.SchemaConsumer;
+import io.engagingspaces.servicediscovery.graphql.events.SchemaReferenceData;
+import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
+import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.CompositeFuture;
+import io.vertx.core.Future;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.servicediscovery.Record;
+import io.vertx.servicediscovery.ServiceDiscovery;
+import io.vertx.servicediscovery.ServiceDiscoveryOptions;
+import io.vertx.servicediscovery.ServiceReference;
+import org.junit.Assert;
+
+import static org.example.servicediscovery.client.StarWarsClient.AuthLevel.DROIDS;
+import static org.example.servicediscovery.client.StarWarsClient.AuthLevel.HUMANS;
+
+public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
+
+    public enum AuthLevel {
+        DROIDS,
+        HUMANS
+    }
+
+    public enum SecurityRealm {
+        Droids,
+        StarWars
+    }
+
+    private static final Logger LOG = LoggerFactory.getLogger(StarWarsClient.class);
+
+    private DiscoveryRegistrar registrar;
+
+    public SecurityRealm authorizeHuman(String question, String answer) {
+        if (question.equals("Give me the first piece of pi") && answer.contains("3.14")) {
+            return SecurityRealm.Droids; // To-do: improve security ;)
+        } else {
+            return SecurityRealm.StarWars;
+        }
+    }
+
+    @Override
+    public void start() {
+        registrar = DiscoveryRegistrar.create(vertx);
+        SchemaConsumer.startDiscovery(new ServiceDiscoveryOptions().setName(securityRealm(DROIDS)), this);
+        SchemaConsumer.startDiscovery(new ServiceDiscoveryOptions().setName(securityRealm(HUMANS)), this);
+    }
+
+    @Override
+    public void schemaDiscoveryEvent(Record record) {
+        if (record.match(new JsonObject().put("name", "StarWarsQuery").put("status", "UP"))) {
+            String schemaName = record.getName()  // same as root query name in GraphQL schema
+            String graphQLQuery = "foo bar";      // your query here
+            JsonObject expected = new JsonObject();
+
+            executeQuery(discoveryName, schemaName, query, null, rh -> {
+                if (rh.succeeded()) {
+                    QueryResult result = rh.result();
+                    if (result.isSucceeded()) {
+                        JsonObject queryData = result.getData();
+                        // Do something with your data..
+                    } else {
+                        List<QueryError> errors = result.getErrors();
+                        LOG.error("Failed to execute GraphQL query with " + errors.size() + " parse errors);
+                    }
+                } else {
+                    LOG.error("Failed to execute GraphQL query", rh.cause());
+                }
+            });
+        }
+    }
+
+    @Override
+    public void schemaReferenceEvent(SchemaReferenceData referenceInfo) {
+        Record record = referenceInfo.getRecord();
+        LOG.info("Service " + record.getName() + " was " + referenceInfo.getStatus());
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) {
+        SchemaConsumer.close(this);
+    }
+
+    @Override
+    public DiscoveryRegistrar discoveryRegistrar() {
+        return registrar;  // provide a valid instance here..
+    }
+}
+
+```
+Also take a look at the [example code](https://github.com/engagingspaces/vertx-graphql-service-discovery/tree/master/examples) in the project.
 
 ### Using the `GraphQLClient` directly
 
+When not using a consumer you can also invoke a static method on `GraphQLClient` to execute a query or just retrieve the `Queryable` service proxy interface. For all calls to the graphql client you need to provide your own service discovery instance, as well as a published `graphql-service` record. Also you have to manage all resources and discovery event subscriptions yourself.
+
+```java
+GraphQLClient.executeQuery(serviceDiscoveryFor(HUMANS), record, query, rh -> {
+    if (rh.succeeded()) {
+        queryFuture.complete(rh.result());
+    } else {
+        queryFuture.fail(rh.cause());
+    }
+});
+```
+
 ## Compatibility
+
+* Oracle Java `8`
+* Gradle `2.14`
+* Vert.x `3.3.0`
+* GraphQL Java `2.0.0
 
 ## Known issues
 
+- There are two tests that need to be fixed that are now `@Ignore`d
+  - One is related to `SchemaPublisher.publishAll()` that has synchronization issues in the test (implementation probably okay, but you best use `publish()` until test code is fixed)
+- A build issue, not related to code, but codacy coverage automation does not work due to some exception thrown (see issue #1)
+
 ## Contributing
+
+All your feedback and help to improve this project is very welcome. Please create issues for your bugs and enhancement request, and better yet, contribute directly by creating a PR.
+
+When reporting an issue, please add a detailed instruction, and if possible a code snippet or test that can be used as a reproducer of your issue.
+
+When creating a pull request, please adhere to the Vert.x coding style, and create tests with your code so it keeps providing a good test coverage level. PR's without tests are not accepted unless they only have minor changes.
 
 ## Acknowledgments
 
