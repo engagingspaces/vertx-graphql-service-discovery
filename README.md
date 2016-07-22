@@ -33,7 +33,7 @@ Also Vert.x is polyglot and enables you to write verticles using any JVM-based p
 
 Finally Vert.x is very versatile and non-opinionated. Whenever possible it lets you choose your own technologies and practices. The toolkit consists of [many standard modules](http://vertx.io/docs/#explore) offering additional features that you can add as needed. You can already start by adding a dependency on [Vert.x Core](http://vertx.io/docs/vertx-core/java/) which is very light-weight and can run as a stand-alone service or fully embedded and hidden from clients.
 
-### More information
+#### More information
 
 - The [Vert.x website] has lots of documentation to get you started
 - Almost every feature is demonstrated in [vertx-examples](https://github.com/vert-x3/vertx-examples) on Github
@@ -173,3 +173,7 @@ To build from source, first `git clone https://github.com/engagingspaces/vertx-g
 ```
 ./gradlew clean build
 ```
+
+## Acknowledgments
+
+This library was made possible due to many great efforts in the open-source community, but especially to the works of the Vert.x team (Tim Fox, Clement Escoffier, Paulo Lopes, Julien Viet et al), the GraphQL team at Facebook (Lee Byron et al), and Andreas Marek who initiated the graphql-java on Github and from whom the StarWars test data was adapted.
