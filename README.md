@@ -316,29 +316,6 @@ When using the consumer the standard `announce` and `usage` discovery events fro
 Let's see how this looks like in code:
 
 ```java
-package org.example.servicediscovery.client;
-
-import io.engagingspaces.servicediscovery.graphql.client.GraphQLClient;
-import io.engagingspaces.servicediscovery.graphql.consumer.DiscoveryRegistrar;
-import io.engagingspaces.servicediscovery.graphql.consumer.SchemaConsumer;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaReferenceData;
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
-import io.vertx.servicediscovery.Record;
-import io.vertx.servicediscovery.ServiceDiscovery;
-import io.vertx.servicediscovery.ServiceDiscoveryOptions;
-import io.vertx.servicediscovery.ServiceReference;
-import org.junit.Assert;
-
-import static org.example.servicediscovery.client.StarWarsClient.AuthLevel.DROIDS;
-import static org.example.servicediscovery.client.StarWarsClient.AuthLevel.HUMANS;
-
 public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
 
     public enum AuthLevel {
@@ -355,9 +332,10 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
 
     private DiscoveryRegistrar registrar;
 
+    // To-do: improve security ;-)
     public SecurityRealm authorizeHuman(String question, String answer) {
         if (question.equals("Give me the first piece of pi") && answer.contains("3.14")) {
-            return SecurityRealm.Droids; // To-do: improve security ;)
+            return SecurityRealm.Droids;
         } else {
             return SecurityRealm.StarWars;
         }
@@ -366,6 +344,7 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
     @Override
     public void start() {
         registrar = DiscoveryRegistrar.create(vertx);
+        // Subscribe to multiple service discoveries (here different auth levels have different services).
         SchemaConsumer.startDiscovery(new ServiceDiscoveryOptions().setName(securityRealm(DROIDS)), this);
         SchemaConsumer.startDiscovery(new ServiceDiscoveryOptions().setName(securityRealm(HUMANS)), this);
     }
@@ -374,7 +353,7 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
     public void schemaDiscoveryEvent(Record record) {
         if (record.match(new JsonObject().put("name", "StarWarsQuery").put("status", "UP"))) {
             String schemaName = record.getName()  // same as root query name in GraphQL schema
-            String graphQLQuery = "foo bar";      // your query here
+            String graphQLQuery = "foo bar";      // your query here..
             JsonObject expected = new JsonObject();
 
             executeQuery(discoveryName, schemaName, query, null, rh -> {
@@ -433,7 +412,7 @@ GraphQLClient.executeQuery(serviceDiscoveryFor(HUMANS), record, query, rh -> {
 * Oracle Java `8`
 * Gradle `2.14`
 * Vert.x `3.3.0`
-* GraphQL Java `2.0.0
+* GraphQL Java `2.0.0`
 
 ## Known issues
 
