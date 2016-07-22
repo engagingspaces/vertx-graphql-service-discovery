@@ -11,8 +11,9 @@ The library deals with the transfer of GraphQL query string to the appropriate s
 ## Table of contents
 
 - [About](#about)
-  - [Vert.x - Building reactive polyglot applications at scale](#vertx---building-reactive-polyglot-applications-at-scale)
-  - [GraphQL - Application layer query language specification](#graphql---application-layer-query-language-specification)
+  - [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale)
+  - [GraphQL](#graphql---application-layer-query-language-specification)
+  - [Vert.x and GraphQL: happy together!](#vertx-and-graphql-happy-together)
 - [Getting started](#getting-started)
   - [Using with Gradle](#using-with-gradle)
   - [Using with Maven](#using-with-maven)
@@ -24,7 +25,19 @@ Vert.x GraphQL Service discovery is implemented in Java 8 and based on [Vert.x](
 
 ### Vert.x - Building reactive polyglot applications at scale
 
+Vert.x is a toolkit that allows development of event-driven, non-blocking application code with ease and create highly scalable, concurrent applications.
 
+With Vert.x you run your code in so-called Verticles that are guaranteed to run on the same thread (except when they are workers in a thread pool). This alleviates the developer from creating complex and error-prone concurrent Java core, and makes it easy to scale to all processor cores and communicate between verticles in a cluster (e.g. by using the [Hazelcast Cluster Manager](http://vertx.io/docs/vertx-hazelcast/java/) module or [Apache Ignite](http://vertx.io/docs/vertx-ignite/java/) cluster manager module)
+
+Also Vert.x is polyglot and enables you to write verticles using any JVM-based programming language (e.g. Java, JavaScript, Groovy, Ruby, Ceylon and Scala) after which they can seamlessly interoperate with verticles written in other languages.
+
+Finally Vert.x is very versatile and non-opinionated. Whenever possible it lets you choose your own technologies and practices. The toolkit consists of [many standard modules](http://vertx.io/docs/#explore) offering additional features that you can add as needed. You can already start by adding a dependency on [Vert.x Core](http://vertx.io/docs/vertx-core/java/) which is very light-weight and can run as a stand-alone service or fully embedded and hidden from clients.
+
+### More information
+
+- The [Vert.x website] has lots of documentation to get you started
+- Almost every feature is demonstrated in [vertx-examples](https://github.com/vert-x3/vertx-examples) on Github
+- And also check this collection of [awesome Vert.x resources](https://github.com/vert-x3/vertx-awesome)
 
 ### GraphQL - Application layer query language specification
 
@@ -53,7 +66,19 @@ There are many interesting source of information on GraphQL to be found on the i
 
 But to get you started, here a couple of interesting resources to check:
 
-- [Introduction to GraphQL](https://learngraphql.com/basics/introduction) by Kadira
+- Nice [Introduction to GraphQL](https://learngraphql.com/basics/introduction) by Kadira
+- View [Zero to GraphQL in 30 minutes](https://www.youtube.com/embed/UBGzsb2UkeY) on YouTube
+- And check the list of [Awesome GraphQL resources](https://github.com/chentsulin/awesome-graphql) for some great community projects
+
+### Vert.x and GraphQL: happy together!
+
+The features described above already make Vert.x ideally suited as enabling technology and backbone in decoupled microservices environments. Together with the query capabilities offered by GraphQL a set of new, interesting ways to communicate between verticles, becomes available.
+
+In larger Vert.x deployments the management of message bus endpoint addresses and message payloads can become quite involved. There are already some modules to ease this burden and simplify the architecture, of which the [Vert.x Service Discovery](https://github.com/vert-x3/vertx-service-discovery) module is one.
+
+Service discovery allows you, among others, to publish [service proxies](http://vertx.io/docs/vertx-service-proxy/java/) which offer (polyglot) RPC-style communication between service proxy clients and remote service implementations.
+
+With this project you get an additional `graphql-service` discovery type, that lets you publish GraphQL schema's and consume them remotely over the event bus, thereby allowing a more data-oriented communication style. If implemented well it will provide a tremendously powerful and versatile, asynchronous, distributed data layer to your architecture.
 
 ## Getting started
 
