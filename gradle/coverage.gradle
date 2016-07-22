@@ -1,0 +1,27 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = '0.7.6.201602180812'
+}
+
+jacocoTestReport {
+    dependsOn "test"
+
+    group = "Reporting"
+    description = "Generate code coverage results using JaCoCo."
+
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        html.enabled = true
+        html.destination "$buildDir/jacocoHtml"
+    }
+
+    // Workaround for exclusions as, instructions in JaCoCo gradle manual do not appear to work.
+    // See: http://liviutudor.com/2016/02/11/jacoco-gradle-excluding-source-files-and-classes/
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/*VertxEBProxy**', '**/*VertxProxyHandler**'])
+        })
+    }
+}
