@@ -6,9 +6,9 @@
 [![Apache licensed](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)]()
 
 This library allows you to publish GraphQL schema's as independent services in your Vert.x based microservices environment and execute queries from remote service clients over the (local or clustered) Vert.x event bus.
-The library deals with the transfer of GraphQL query string to the appropriate service, and the return of query Json-formatted query results, or a list of parse errors if the query failed.
+The library deals with the transfer of GraphQL query strings to the appropriate service, and returning of Json-formatted query results, or a list of parse errors in case of parse errors.
 
-**Note**: Code samples on this page and the project implementation are in Java, but service discovery clients can be implemented in any JWM language supported by [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale).
+**Note**: While code samples are in Java, service discovery clients can be implemented in any JVM language supported by [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale).
 
 ## Table of contents
 
@@ -34,30 +34,30 @@ The library deals with the transfer of GraphQL query string to the appropriate s
 
 ## Technology
 
-Vert.x GraphQL Service discovery is implemented in Java 8 and based on the interesting and innovative technologies [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension of the recently released (as of version `3.3.0`) [Vert.x Discovery service library](http://vertx.io/docs/vertx-service-discovery/java/) (one of a range of different microservices modules that come with this release) 
+Vert.x GraphQL Service discovery is implemented in Java 8 and based on the interesting and innovative technologies [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension to the recently released (as of version `3.3.0`) [Vert.x Service discovery](http://vertx.io/docs/vertx-service-discovery/java/) module (one of a range of different microservices modules that were introduced with this release) 
 
 ### Vert.x - Building reactive polyglot applications at scale
 
-Vert.x was originally created by Tim Fox in 2011 while working for VMWare, and is now part of the [Eclipse Foundation](http://www.eclipse.org/org/foundation/) (see also [wikipedia](https://en.wikipedia.org/wiki/Vert.x)). Vert.x is a toolkit that allows development of event-driven, non-blocking application code with ease to create highly scalable, concurrent internet applications.
+Vert.x was originally created by Tim Fox in 2011 while working for VMWare, and is now part of the [Eclipse Foundation](http://www.eclipse.org/org/foundation/) (see [Vert.x on wikipedia](https://en.wikipedia.org/wiki/Vert.x)). Vert.x is a toolkit that allows development of event-driven, non-blocking application code with ease and create highly scalable, concurrent internet applications.
 
-With Vert.x you run your code in so-called Verticles that are guaranteed to run on the same thread (except when they are workers in a thread pool). This alleviates the developer from creating complex and error-prone concurrent Java core, and makes it easy to scale to all processor cores and communicate between distributed verticles in a cloud-based cluster (e.g. by using the [Hazelcast Cluster Manager](http://vertx.io/docs/vertx-hazelcast/java/) module or the [Apache Ignite](http://vertx.io/docs/vertx-ignite/java/) cluster manager module)
+With Vert.x you run your code in so-called Verticles that are guaranteed to run on the same thread (except when they are deployed as workers in a thread pool). This alleviates the developer from creating complex and error-prone concurrent Java code, and makes it easy to fully utilize all your processor cores and communicate between distributed verticles in a cloud-based cluster (e.g. by using the [Hazelcast Cluster Manager](http://vertx.io/docs/vertx-hazelcast/java/) module or the [Apache Ignite](http://vertx.io/docs/vertx-ignite/java/) cluster manager module that are part of the toolkit)
 
-Also Vert.x is polyglot which enables you to write verticles using any JVM-based programming language (e.g. Java, JavaScript, Groovy, Ruby, Ceylon and Scala) after which they can seamlessly interoperate with verticles written in other languages.
+Also Vert.x is polyglot which enables you to write verticles in any JVM-based programming language. There is out-of-the-box support for Java, JavaScript, Groovy, Ruby, Ceylon and Scala). After creating your code using your favourite language it can seamlessly interoperate with other Vert.x verticles written in different languages.
 
-Finally Vert.x's modular toolkit design is very versatile and non-opinionated. Where possible it lets you choose your own technologies and development practices. The toolkit comes with [many standard modules](http://vertx.io/docs/#explore) out of the box that provide additional features that you can add as needed. 
-The additional modules are entirely optional. You can readily start with a dependency on just the light-weight [Vert.x Core](http://vertx.io/docs/vertx-core/java/) module, run it stand-alone or fully embedded, hidden from clients. And then spin up a full-blown Netty based HTTP server in just 3 lines of code (or in a single line if you value conciseness above readibility :wink:).
+Finally Vert.x's modular and and non-opinionated toolkit design makes it very versatile and widely applicable. Where possible Vert.x lets you choose your own technologies and development practices. The toolkit comes with [many standard modules](http://vertx.io/docs/#explore) out of the box that provide additional features that you can add as needed. 
+But adding additional modules is entirely optional. You can readily start with a single dependency on the light-weight [Vert.x Core](http://vertx.io/docs/vertx-core/java/) module, and run it as stand-alone service or fully embedded in your code, hidden from clients. Spinning up a full-blown Netty-based HTTP server then requires just 3 lines of code (or a single line if you value conciseness above readibility. Scala users, take note! :wink: :wink:).
 
 #### More information
 
-- The [Vert.x website] has lots of documentation to get you started
+- The [Vert.x website](http://vertx.io/docs) has lots of documentation to get you started
 - Almost every feature is demonstrated in [vertx-examples](https://github.com/vert-x3/vertx-examples) on Github
 - And also check this collection of [awesome Vert.x resources](https://github.com/vert-x3/vertx-awesome)
 
-### GraphQL - Application layer query language specification
+### GraphQL - Query language specification for application data layers
 
-The [GraphQL specification](http://graphql.org/) and a [reference implementation in Javascript](https://github.com/graphql/graphql-js) were released to the open-source community by Facebook in 2015 after using it internally in production for several years as data query language and runtime to interact with their many services.
+The [GraphQL specification](http://graphql.org/) and its [reference implementation in Javascript](https://github.com/graphql/graphql-js) were released to the open-source community by Facebook in 2015 after having used it internally in production for several years as a data query language and runtime to improve clarity and accessibility to the data exposed by the many services of the Facebook website, and allow decoupled development of client- and service-side codebases.
 
-GraphQL provides a new and interesting way of exposing the data in your application layer to clients, that can yield significant benefits over more 'traditional' REST and HATEOAS styles of communication, especially when compared to large and complex REST API designs, with many endpoints and URL parameters.
+GraphQL provides a new and interesting way of exposing the data in your application layer to clients, that can yield significant benefits over more 'traditional' REST and HATEOAS styles of communication, especially as projects get bigger and REST API designs more complex, getting ever more endpoints, URL parameters and new caching requirements as a consequence.
 
 GraphQL allows you to:
 
@@ -72,27 +72,35 @@ GraphQL allows you to:
  - Instead of many HTTP requests to receive some aggregate data set, a full resultset can be retrieved in a single query call
  - Instead of complex cache storage and pruning strategies, the GraphQL query language allows much easier cache management
   
-GraphQL is not a golden hammer however, and there still valid cases to have more restful API designs. And also GraphQL is still relatively new and under heavy development. So inform yourself well. 
+The term 'GraphQL query' might lead you to believe that GraphQL is only about querying. The term is a bit misleading, because there are also so-called *mutation queries* where you can modify data. You could compare mutations and queries to *commands* and *queries* in a CQRS design. The GraphqL queries are similar to the de-normalized data projections that live on the query-side, except that with GraphQL you don't have to define the projections on the server-side. The front-end developer is in charge here.
+
+GraphQL is not a golden hammer however, and there are still valid cases where more restful API designs are in place. Also GraphQL is still relatively new and under heavy development. So do your homework well. 
 
 #### More information
 
-There are many interesting source of information on GraphQL to be found on the internet, like using it together with [Relay]() and [ReactJS]() to create nicely decoupled dynamic web front-ends and back-ends that communicate very efficiently.
+There are many interesting sources of information on GraphQL to be found on the internet, and a very active community. Biggest application at the moment is with other Facebook project like [Relay]() and [ReactJS]() to create nicely decoupled dynamic web front-ends and back-ends that communicate very efficiently with the backend.
 
 But to get you started, here a couple of interesting resources to check:
 
-- Nice [Introduction to GraphQL](https://learngraphql.com/basics/introduction) by Kadira
+- Nice and gentle [Introduction to GraphQL](https://learngraphql.com/basics/introduction) by Kadira
 - View [Zero to GraphQL in 30 minutes](https://www.youtube.com/embed/UBGzsb2UkeY) on YouTube
 - And check the list of [Awesome GraphQL resources](https://github.com/chentsulin/awesome-graphql) for some great community projects
 
 ### Vert.x and GraphQL: happy together!
 
-The features described above already make Vert.x ideally suited as enabling technology and backbone in decoupled microservices environments. Together with the query capabilities offered by GraphQL a set of new, interesting ways to communicate between verticles, becomes available.
+The features described above already make Vert.x ideally suited as enabling technology and backbone in decoupled microservices environments. Together with the query capabilities offered by GraphQL a set of new, interesting ways to communicate between verticles becomes available.
 
-In larger Vert.x deployments the management of message bus endpoint addresses and message payloads can become quite involved. There are already some modules to ease this burden and simplify the architecture, of which the [Vert.x Service Discovery](https://github.com/vert-x3/vertx-service-discovery) module is one.
+Currently this project is using the [graphq-java](https://github.com/graphql-java/graphql-java) library implementation developed for Java 6. A Vert.x-based reimplementation might outperform (see [benchmarks](https://www.techempower.com/benchmarks/)) other current GraphQL server implementations (maybe not the [Go-based ones](https://github.com/chentsulin/awesome-graphql#lib-go), but that would be an interesting battle) and it would be the first fully asynchronous GraphQL server.
 
-Service discovery allows you, among others, to publish [service proxies](http://vertx.io/docs/vertx-service-proxy/java/) which offer (polyglot) RPC-style communication between service proxy clients and remote service implementations.
+Vert.x itself is an ideal server implementation platform for GraphQL. Most server implementations and almost all examples you'll find on the internet are using [node](https://nodejs.org/en/) and [express](https://expressjs.com/). 
 
-With this project you get an additional `graphql-service` discovery type, that lets you publish GraphQL schema's and consume them remotely over the event bus, thereby allowing a more data-oriented communication style. If implemented well it will provide a tremendously powerful and versatile, asynchronous, distributed data layer to your architecture.
+GraphQL also brings something extra to Vert.x:
+
+In larger Vert.x deployments the management of message bus endpoint addresses, consumers and message payloads can become quite involved. There are already some modules to ease this burden and simplify the architecture, of which the [Vert.x Service Discovery](https://github.com/vert-x3/vertx-service-discovery) module is one.
+
+Service discovery allows you, among others, to publish [service proxies](http://vertx.io/docs/vertx-service-proxy/java/) to provide RPC-style communication between service proxy clients (polyglot) and their remote service implementations (also polyglot).
+
+With GraphQL and this project you get an additional `graphql-service` discovery type, that lets you publish GraphQL schema's and consume them remotely over the event bus. This allows for a more data-oriented communication style, and a clean abstraction of your data layer. GraphQL is ideally suited for microservices architectures, where you can have a GraphQL schema's expose the bounded context of your microservices. When implemented well it will provide a tremendously powerful and versatile data layer to your architecture that is both asynchronous and fully distributed.
 
 ## Getting started
 
@@ -131,7 +139,6 @@ In order to resolve the Bintray dependencies the following repository settings c
           xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
           xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
                                   http://maven.apache.org/xsd/settings-1.0.0.xsd'>
- 
     <profiles>
         <profile>
             <repositories>
@@ -144,6 +151,7 @@ In order to resolve the Bintray dependencies the following repository settings c
                     <url>http://dl.bintray.com/engagingspaces/maven</url>
                 </repository>
             </repositories>
+            
             <pluginRepositories>
                 <pluginRepository>
                     <snapshots>
@@ -157,6 +165,7 @@ In order to resolve the Bintray dependencies the following repository settings c
             <id>bintray</id>
         </profile>
     </profiles>
+    
     <activeProfiles>
         <activeProfile>bintray</activeProfile>
     </activeProfiles>
@@ -329,10 +338,9 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(StarWarsClient.class);
-
     private DiscoveryRegistrar registrar;
 
-    // To-do: improve security ;-)
+    // To-do: improve security to fool TensorFlow ;-)
     public SecurityRealm authorizeHuman(String question, String answer) {
         if (question.equals("Give me the first piece of pi") && answer.contains("3.14")) {
             return SecurityRealm.Droids;
@@ -361,7 +369,7 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
                     QueryResult result = rh.result();
                     if (result.isSucceeded()) {
                         JsonObject queryData = result.getData();
-                        // Do something with your data..
+                        // Do something interesting with your data..
                     } else {
                         List<QueryError> errors = result.getErrors();
                         LOG.error("Failed to execute GraphQL query with " + errors.size() + " parse errors);
@@ -436,4 +444,4 @@ This library was made possible due to many great efforts in the open-source comm
 
 This project [vertx-graphql-service-discovery](https://github.com/engagingspaces/vertx-graphql-service-discovery) is licensed under the [Apache Commons v2.0](https://github.com/engagingspaces/vertx-graphql-service-discovery/LICENSE) license.
 
-Copyright &copy; 2016 Arnold Schrijver and [contributors](https://github.com/engagingspaces/vertx-graphql-service-discovery/graphs/contributors)
+Copyright &copy; 2016 Arnold Schrijver and other [contributors](https://github.com/engagingspaces/vertx-graphql-service-discovery/graphs/contributors)
