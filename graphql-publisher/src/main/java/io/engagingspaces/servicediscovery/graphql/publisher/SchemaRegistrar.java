@@ -38,7 +38,7 @@ import java.util.function.BiConsumer;
 /**
  * Manages {@link ServiceDiscovery} creation, schema registration and schema events.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
 

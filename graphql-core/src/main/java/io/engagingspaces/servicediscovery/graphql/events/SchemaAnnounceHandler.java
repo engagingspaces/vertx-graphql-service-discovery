@@ -21,7 +21,7 @@ import io.vertx.servicediscovery.Record;
 /**
  * Event handler that is invoked when a schema has been published or un-published.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @FunctionalInterface
 public interface SchemaAnnounceHandler {

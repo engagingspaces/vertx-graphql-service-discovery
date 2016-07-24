@@ -14,6 +14,9 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
+/**
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
+ */
 @ModuleGen(name="vertx-graphql-service-core", groupPackage = "io.engagingspaces")
 package io.engagingspaces.servicediscovery.graphql;
 

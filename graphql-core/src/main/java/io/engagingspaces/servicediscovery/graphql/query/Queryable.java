@@ -28,7 +28,7 @@ import io.vertx.serviceproxy.ProxyHelper;
 /**
  * Service proxy interface that provides access to the schema definitions that are exposed by a GraphQL publisher.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @ProxyGen
 public interface Queryable {

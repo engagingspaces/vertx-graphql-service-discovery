@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * If the query was successful the response is available as {@link JsonObject}. Otherwise a list of
  * {@link QueryError} provides more detail on the failure.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @DataObject
 public class QueryResult {

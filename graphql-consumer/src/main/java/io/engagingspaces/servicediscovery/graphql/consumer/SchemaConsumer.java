@@ -41,7 +41,7 @@ import java.util.Optional;
  * <p>
  * Service discovery instances are automatically created and closed when needed.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface SchemaConsumer extends SchemaAnnounceHandler, SchemaUsageHandler {
 

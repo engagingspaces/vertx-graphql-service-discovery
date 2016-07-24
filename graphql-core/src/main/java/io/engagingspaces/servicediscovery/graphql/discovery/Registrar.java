@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Interface for registrar implementations.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface Registrar {
 

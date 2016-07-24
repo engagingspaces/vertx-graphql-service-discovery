@@ -35,7 +35,7 @@ import static io.engagingspaces.servicediscovery.graphql.query.Queryable.SERVICE
 /**
  * Client for consuming GraphQL services.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @VertxGen
 public interface GraphQLClient {

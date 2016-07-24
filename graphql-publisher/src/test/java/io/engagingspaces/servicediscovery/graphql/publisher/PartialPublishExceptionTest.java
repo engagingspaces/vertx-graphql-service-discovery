@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Tests for partial publish exception.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class PartialPublishExceptionTest {
 

@@ -37,7 +37,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for the query results data object.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class QueryResultTest {

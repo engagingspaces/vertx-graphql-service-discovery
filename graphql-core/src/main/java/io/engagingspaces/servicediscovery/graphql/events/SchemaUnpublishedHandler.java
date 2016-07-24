@@ -21,7 +21,7 @@ import io.engagingspaces.servicediscovery.graphql.discovery.Registration;
 /**
  * Event handler that is invoked on publishers, when one of its published schema's is unpublished.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  * @param <T> the registration type of the event data
  */
 @FunctionalInterface

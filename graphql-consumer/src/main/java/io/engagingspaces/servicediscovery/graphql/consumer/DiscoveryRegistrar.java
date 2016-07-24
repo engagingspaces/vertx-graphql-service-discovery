@@ -28,7 +28,7 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 /**
  * Manages {@link ServiceDiscovery} creation, and registration of discovery events.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class DiscoveryRegistrar extends AbstractRegistrar<DiscoveryRegistration> {
 

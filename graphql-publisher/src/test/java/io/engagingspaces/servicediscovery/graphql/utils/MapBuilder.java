@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 /**
  * Adapted from: http://minborgsjavapot.blogspot.nl/2014/12/java-8-initializing-maps-in-smartest-way.html
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class MapBuilder {
 

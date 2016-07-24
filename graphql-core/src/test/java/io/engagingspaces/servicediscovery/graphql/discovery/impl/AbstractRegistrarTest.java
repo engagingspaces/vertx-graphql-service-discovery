@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Tests for the abstract registrar base class.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class AbstractRegistrarTest {

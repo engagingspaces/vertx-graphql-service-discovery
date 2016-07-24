@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * Implementation of the {@link GraphQLService} interface.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class GraphQLServiceImpl implements GraphQLService {
 

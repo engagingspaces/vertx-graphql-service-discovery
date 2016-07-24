@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for the {@link SchemaReferenceData} data object.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class SchemaReferenceDataTest {
 

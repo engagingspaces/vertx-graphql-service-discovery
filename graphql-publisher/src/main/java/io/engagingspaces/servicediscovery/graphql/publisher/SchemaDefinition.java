@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface SchemaDefinition extends Queryable {
 

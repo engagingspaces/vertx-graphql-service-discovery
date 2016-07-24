@@ -33,7 +33,7 @@ import java.util.*;
 /**
  * Internal class for managing message consumers.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class SchemaMessageConsumers {
 

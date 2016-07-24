@@ -40,7 +40,7 @@ import static io.engagingspaces.servicediscovery.graphql.query.Queryable.SERVICE
  * {@link ServiceType} for GraphQL services.
  * Consumers receive a suitable service proxy to handle GraphQL queries and mutations.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface GraphQLService extends ServiceType {
 

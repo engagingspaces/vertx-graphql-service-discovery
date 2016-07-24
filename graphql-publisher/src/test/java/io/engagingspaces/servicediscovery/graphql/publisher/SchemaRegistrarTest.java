@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests for schema registrar class.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class SchemaRegistrarTest {

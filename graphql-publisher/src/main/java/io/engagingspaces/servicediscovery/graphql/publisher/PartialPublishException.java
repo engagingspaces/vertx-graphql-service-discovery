@@ -25,7 +25,7 @@ import java.util.List;
  * This exception can be used to determine which schema definitions failed, re-publish them, or rollback by
  * un-publishing schema's that were successful in the publishing operation.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public final class PartialPublishException extends RuntimeException {
 

@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * Base class for registrars.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  * @param <T> the registration type to use
  */
 public abstract class AbstractRegistrar<T extends Registration> implements Registrar {

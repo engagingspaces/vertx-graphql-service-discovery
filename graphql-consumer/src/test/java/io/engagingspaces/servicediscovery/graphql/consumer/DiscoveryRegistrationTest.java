@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * Tests for the discovery registration class.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class DiscoveryRegistrationTest {
 

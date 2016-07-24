@@ -30,7 +30,7 @@ import static graphql.schema.GraphQLObjectType.newObject;
  * Test schema adapted from:
  * https://github.com/graphql-java/graphql-java/blob/master/src/test/groovy/graphql/StarWarsSchema.java
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class StarWarsSchema implements SchemaDefinition {
 

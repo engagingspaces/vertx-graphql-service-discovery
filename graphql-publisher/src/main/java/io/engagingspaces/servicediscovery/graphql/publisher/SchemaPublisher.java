@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * <p>
  * Service discovery instances are automatically created and closed as needed.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface SchemaPublisher extends
         SchemaPublishedHandler<SchemaRegistration>, SchemaUnpublishedHandler<SchemaRegistration> {

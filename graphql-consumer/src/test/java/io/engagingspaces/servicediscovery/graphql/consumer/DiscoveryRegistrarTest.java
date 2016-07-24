@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for discovery registrar.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class DiscoveryRegistrarTest {

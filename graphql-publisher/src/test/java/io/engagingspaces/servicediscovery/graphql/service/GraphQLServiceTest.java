@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * Tests for graphql service interface static members.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class GraphQLServiceTest {

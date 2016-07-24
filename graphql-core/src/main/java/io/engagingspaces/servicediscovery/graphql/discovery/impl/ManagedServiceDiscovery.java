@@ -39,7 +39,7 @@ import java.util.function.Function;
  * {@link ServiceDiscovery#close()} to a {@link Registrar} and
  * forwards all other method calls to the wrapped service discovery instance.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 class ManagedServiceDiscovery implements ServiceDiscovery {
 
@@ -75,7 +75,7 @@ class ManagedServiceDiscovery implements ServiceDiscovery {
      *
      * @param managedDiscovery the managed discovery
      */
-    static void closeUnmanaged(ManagedServiceDiscovery managedDiscovery) {
+    protected static void closeUnmanaged(ManagedServiceDiscovery managedDiscovery) {
         managedDiscovery.unmanagedDiscoveryInstance.close();
     }
 

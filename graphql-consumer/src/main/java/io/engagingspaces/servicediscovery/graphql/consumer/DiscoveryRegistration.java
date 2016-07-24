@@ -24,7 +24,7 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
  * Registration for tracking service discovery events of a
  * registered {@link ServiceDiscovery}.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class DiscoveryRegistration extends AbstractRegistration {
 

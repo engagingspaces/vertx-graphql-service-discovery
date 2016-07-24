@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * Base class for registration types.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class AbstractRegistration implements Registration {
 

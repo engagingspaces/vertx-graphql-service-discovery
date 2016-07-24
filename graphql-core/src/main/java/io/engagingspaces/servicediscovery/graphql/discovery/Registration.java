@@ -22,7 +22,7 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 /**
  * Interface for registrations managed by a particular {@link Registrar}.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public interface Registration {
 

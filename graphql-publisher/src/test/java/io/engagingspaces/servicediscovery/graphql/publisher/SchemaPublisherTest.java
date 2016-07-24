@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for schema publisher interface default implementation.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @RunWith(VertxUnitRunner.class)
 public class SchemaPublisherTest {

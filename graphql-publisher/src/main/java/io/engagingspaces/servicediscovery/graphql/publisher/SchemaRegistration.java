@@ -32,7 +32,7 @@ import java.util.Optional;
 /**
  * Registration tracking publication state of a registered {@link SchemaDefinition}.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 public class SchemaRegistration extends AbstractRegistration {
 

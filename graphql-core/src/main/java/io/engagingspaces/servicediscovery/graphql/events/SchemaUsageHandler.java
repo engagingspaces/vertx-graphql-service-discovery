@@ -19,7 +19,7 @@ package io.engagingspaces.servicediscovery.graphql.events;
 /**
  * Event handler that is invoked after a schema reference has been bound or released.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @FunctionalInterface
 public interface SchemaUsageHandler {

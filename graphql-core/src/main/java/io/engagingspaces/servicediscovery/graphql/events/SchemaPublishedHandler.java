@@ -21,7 +21,7 @@ import io.engagingspaces.servicediscovery.graphql.discovery.Registration;
 /**
  * Event handler that is invoked on publishers, when a new schema definition has been published.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  * @param <T> the registration type of the event data
  */
 @FunctionalInterface

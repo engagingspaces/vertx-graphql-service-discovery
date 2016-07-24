@@ -24,7 +24,7 @@ import io.vertx.servicediscovery.Record;
  * Immutable data object that represents the state of a {@link io.vertx.servicediscovery.ServiceReference} when a
  * service discovery `usage` event occurs that matches a published schema.
  *
- * @author Arnold Schrijver
+ * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @DataObject
 public class SchemaReferenceData {
