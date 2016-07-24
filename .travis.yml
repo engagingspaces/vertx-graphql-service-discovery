@@ -12,4 +12,4 @@ branches:
     - master
 
 script:
-- gradle clean test bintrayUpload
+- gradle clean test

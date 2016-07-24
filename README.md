@@ -2,8 +2,9 @@
 
 [![Build Status](https://travis-ci.org/engagingspaces/vertx-graphql-service-discovery.svg?branch=master)](https://travis-ci.org/engagingspaces/vertx-graphql-service-discovery/)&nbsp;&nbsp;
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bbc6f66bf524c5dbed8cf1a0466d0e2)](https://www.codacy.com/app/arnold_schrijver/vertx-graphql-service-discovery?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=engagingspaces/vertx-graphql-service-discovery&amp;utm_campaign=Badge_Grade)&nbsp;&nbsp;
-[![Bintray](https://img.shields.io/bintray/v/engagingspaces/maven/vertx-graphql-core.svg?maxAge=2592000)](https://bintray.com/engagingspaces/maven/vertx-graphql-core)&nbsp;&nbsp;
 [![Apache licensed](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)]()
+
+[![Download](https://api.bintray.com/packages/engagingspaces/maven/vertx-graphql-core/images/download.svg) ](https://bintray.com/engagingspaces/maven/vertx-graphql-core/_latestVersion)
 
 This library allows you to publish GraphQL schema's as independent services in your Vert.x based microservices environment and execute queries from remote service clients over the (local or clustered) Vert.x event bus.
 The library deals with the transfer of GraphQL query strings to the appropriate service, and returning of Json-formatted query results, or a list of parse errors in case of parse errors.
