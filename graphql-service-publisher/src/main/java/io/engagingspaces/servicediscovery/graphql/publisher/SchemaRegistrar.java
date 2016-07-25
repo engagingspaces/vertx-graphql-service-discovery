@@ -29,10 +29,7 @@ import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.Status;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -163,7 +160,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
      */
     protected void close(BiConsumer<SchemaRegistration, Handler<AsyncResult<Void>>> closeAction,
                Handler<AsyncResult<Void>> closeHandler) {
-
+        Objects.requireNonNull(closeHandler, "Schema registrar close handler cannot be null");
         if (!registrations().isEmpty()) {
             // Execute the close action against each of the published schema's (e.g. un-publishing)
             List<Future> futures = new ArrayList<>();

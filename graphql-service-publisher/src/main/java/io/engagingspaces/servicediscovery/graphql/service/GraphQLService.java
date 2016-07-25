@@ -87,6 +87,7 @@ public interface GraphQLService extends ServiceType {
         Objects.requireNonNull(discovery, "Service discovery cannot be null");
         Objects.requireNonNull(definition, "GraphQL queryable cannot be null");
         Objects.requireNonNull(definition.schema(), "GraphQL schema cannot be null");
+        Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
 
         GraphQLSchema schema = definition.schema();
         String rootQueryName = schema.getQueryType().getName();
@@ -135,6 +136,7 @@ public interface GraphQLService extends ServiceType {
     static void unpublish(SchemaRegistration registration,
                           Handler<AsyncResult<Void>> resultHandler) {
         Objects.requireNonNull(registration, "Schema registration cannot be null");
+        Objects.requireNonNull(resultHandler, "Un-publication result handler cannot be null");
 
         registration.getDiscovery().unpublish(registration.getRecord().getRegistration(), rh -> {
             if (rh.succeeded()) {

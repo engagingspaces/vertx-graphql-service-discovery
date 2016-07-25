@@ -120,7 +120,7 @@ public interface SchemaConsumer extends SchemaAnnounceHandler, SchemaUsageHandle
     }
 
     /**
-     * Unregisters all event consumers associated with the attached service discoveries, then closes the service
+     * Unregisters all event consumers associated with the managed service discoveries, then closes the service
      * discoveries.
      *
      * @param consumer the schema event consumer to close
@@ -135,8 +135,9 @@ public interface SchemaConsumer extends SchemaAnnounceHandler, SchemaUsageHandle
      * Executes the GraphQL query against the specified schema definition (aka the graphql service name)
      * that is published to the service discovery with the specified name.
      * <p>
-     * On success a {@link QueryResult} is returned. Note that at this point the GraphQL query may still have failed,
-     * so be sure to check the {@link QueryResult#getErrors()} property afterwards.
+     * On success a {@link QueryResult} is returned. The GraphQL query itself may still have failed, so
+     * check {@link QueryResult#isSucceeded()} afterwards. If not successful parse errors can be retrieved
+     * from {@link QueryResult#getErrors()}.
      * <p>
      * The top-level keys in the `variables` json represent the variable names that are used in the query string, and
      * are passed with their corresponding values to the query executor.
@@ -169,6 +170,10 @@ public interface SchemaConsumer extends SchemaAnnounceHandler, SchemaUsageHandle
      */
     default void executeQuery(String discoveryName, String schemaName, String query,
                               JsonObject variables, Handler<AsyncResult<QueryResult>> resultHandler) {
+        Objects.requireNonNull(schemaName, "Schema definition name cannot be null");
+        Objects.requireNonNull(query, "GraphQL query cannot be null");
+        Objects.requireNonNull(resultHandler, "Query result handler cannot be null");
+
         if (!managedDiscoveries().contains(discoveryName)) {
             resultHandler.handle(Future.failedFuture("Service discovery with name '" + discoveryName +
                     "' is not managed by this schema consumer"));

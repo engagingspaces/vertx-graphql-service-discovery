@@ -51,6 +51,7 @@ public interface GraphQLClient {
     static void getSchemaProxy(ServiceDiscovery discovery, JsonObject filter,
                                Handler<AsyncResult<Queryable>> resultHandler) {
         Objects.requireNonNull(discovery, "Service discovery cannot be null");
+        Objects.requireNonNull(resultHandler, "Schema proxy result handler cannot be null");
 
         discovery.getRecord(filter, rh -> {
             if (rh.failed()) {
@@ -82,6 +83,7 @@ public interface GraphQLClient {
                                Handler<AsyncResult<Queryable>> resultHandler) {
         Objects.requireNonNull(discovery, "Service discovery cannot be null");
         Objects.requireNonNull(record, "Record cannot be null");
+        Objects.requireNonNull(resultHandler, "Schema proxy result handler cannot be null");
 
         if (!SERVICE_TYPE.equals(record.getType())) {
             resultHandler.handle(Future.failedFuture("Record '" + record.getName() +
@@ -139,6 +141,7 @@ public interface GraphQLClient {
         Objects.requireNonNull(discovery, "Service discovery cannot be null");
         Objects.requireNonNull(record, "Record cannot be null");
         Objects.requireNonNull(query, "GraphQL query cannot be null");
+        Objects.requireNonNull(resultHandler, "Query result handler cannot be null");
 
         getSchemaProxy(discovery, record, rh -> {
            if (rh.succeeded()) {

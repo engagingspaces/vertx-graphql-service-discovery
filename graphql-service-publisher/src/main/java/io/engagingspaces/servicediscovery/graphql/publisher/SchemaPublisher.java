@@ -103,6 +103,7 @@ public interface SchemaPublisher extends
                             Handler<AsyncResult<List<SchemaRegistration>>> resultHandler,
                             SchemaDefinition... definitions) {
 
+        Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
         if (definitions == null || definitions.length == 0) {
             resultHandler.handle(Future.failedFuture("Nothing to publish. No schema definitions provided"));
             return;
@@ -161,7 +162,7 @@ public interface SchemaPublisher extends
         }
         Objects.requireNonNull(definition.schema(), "Schema definition graphql schema cannot be null");
         Objects.requireNonNull(options, "Schema discovery options cannot be null");
-        Objects.requireNonNull(resultHandler, "Result handler cannot be null");
+        Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
 
         String schemaName = definition.schema().getQueryType().getName();
         if (schemaRegistrar().findRegistration(options.getName(), schemaName).isPresent()) {
@@ -189,6 +190,7 @@ public interface SchemaPublisher extends
      * @param resultHandler the result handler
      */
     default void unpublish(SchemaRegistration registration, Handler<AsyncResult<Void>> resultHandler) {
+        Objects.requireNonNull(resultHandler, "Un-publication result handler cannot be null");
         GraphQLService.unpublish(registration, rh -> {
             if (rh.succeeded()) {
                 schemaRegistrar().unregister(registration);
