@@ -42,7 +42,7 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
     private final String publisherId;
     private final SchemaMessageConsumers consumerManager;
 
-    private SchemaRegistrar(Vertx vertx, String publisherId) {
+    protected SchemaRegistrar(Vertx vertx, String publisherId) {
         super(vertx);
         this.publisherId = publisherId == null ? UUID.randomUUID().toString() :  publisherId;
         this.consumerManager = new SchemaMessageConsumers(vertx);
