@@ -115,7 +115,7 @@ repositories {
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-service-publisher:0.9.1'
+  compile 'io.engagingspaces:vertx-graphql-service-publisher:0.9.2'
 }
 ```
 Consumers of a published GraphQL service that want to execute queries need a dependency on `vertx-graphql-service-consumer`:
@@ -127,7 +127,7 @@ repositories {
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-service-consumer:0.9.1'
+  compile 'io.engagingspaces:vertx-graphql-service-consumer:0.9.2'
 }
 ```
 ### Using with Maven
@@ -178,7 +178,7 @@ When using Maven a publisher of a GraphQL schema needs to add the following depe
 <dependency>
     <groupId>io.engagingspaces</groupId>
     <artifactId>vertx-graphql-service-publisher</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
 </dependency>
 ```
 And consumers of a GraphQL service need to add the `vertx-graphql-service-consumer` dependency to their `pom.xml`:
@@ -186,7 +186,7 @@ And consumers of a GraphQL service need to add the `vertx-graphql-service-consum
 <dependency>
     <groupId>io.engagingspaces</groupId>
     <artifactId>vertx-graphql-service-consumer</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
 </dependency>
 ```
 
