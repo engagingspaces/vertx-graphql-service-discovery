@@ -107,7 +107,7 @@ With GraphQL and this project you get an additional `graphql-service` discovery 
 
 ### Using with Gradle
 
-Publishers of a GraphQL schema need to add a dependency on `vertx-graphql-publisher`:
+Publishers of a GraphQL schema need to add a dependency on `vertx-graphql-service-publisher`:
 ```
 repositories { 
   maven { 
@@ -116,10 +116,10 @@ repositories {
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-publisher:0.9.0'
+  compile 'io.engagingspaces:vertx-graphql-service-publisher:0.9.1'
 }
 ```
-Consumers of a published GraphQL service that want to execute queries need a dependency on `vertx-graphql-consumer`:
+Consumers of a published GraphQL service that want to execute queries need a dependency on `vertx-graphql-service-consumer`:
 ```
 repositories { 
   maven { 
@@ -128,7 +128,7 @@ repositories {
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-consumer:0.9.0'
+  compile 'io.engagingspaces:vertx-graphql-service-consumer:0.9.1'
 }
 ```
 ### Using with Maven
@@ -172,22 +172,22 @@ In order to resolve the Bintray dependencies the following repository settings c
     </activeProfiles>
 </settings>
 ```
-Or you can add the repository defintion directly in your `pom.xml`.
+Or you can add the repository definition directly in your `pom.xml`.
 
 When using Maven a publisher of a GraphQL schema needs to add the following dependency to the `pom.xml`:
 ```
 <dependency>
     <groupId>io.engagingspaces</groupId>
-    <artifactId>graphql-publisher</artifactId>
-    <version>0.9.0</version>
+    <artifactId>vertx-graphql-service-publisher</artifactId>
+    <version>0.9.1</version>
 </dependency>
 ```
-And consumers of a GraphQL service need to add the `vertx-graphql-consumer` dependency to their `pom.xml`:
+And consumers of a GraphQL service need to add the `vertx-graphql-service-consumer` dependency to their `pom.xml`:
 ```
 <dependency>
     <groupId>io.engagingspaces</groupId>
-    <artifactId>graphql-publisher</artifactId>
-    <version>0.9.0</version>
+    <artifactId>vertx-graphql-service-consumer</artifactId>
+    <version>0.9.1</version>
 </dependency>
 ```
 
@@ -238,7 +238,7 @@ public class DroidsSchema implements SchemaDefinition {
 
 ### Using a `SchemaPublisher` implementation
 
-Most convenient and easy to use is publication of GraphQL services using a [`SchemaPublisher`](https://github.com/engagingspaces/vertx-graphql-service-discovery/blob/master/graphql-publisher/src/main/java/io/engagingspaces/servicediscovery/graphql/publisher/SchemaPublisher.java).
+Most convenient and easy to use is publication of GraphQL services using a [`SchemaPublisher`](https://github.com/engagingspaces/vertx-graphql-service-discovery/blob/master/graphql-service-publisher/src/main/java/io/engagingspaces/servicediscovery/graphql/publisher/SchemaPublisher.java).
 
 A schema publisher is implemented as an interface so you can attach it to any class without limiting its extensibility (e.g. your verticle can still derive from `AbstractVerticle`). The only requirement is that you provide a valid instance of a `SchemaRegistrar` from the overridden `SchemaPublisher.schemaRegistrar()` method.
 
@@ -360,9 +360,13 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
 
     @Override
     public void schemaDiscoveryEvent(Record record) {
-        if (record.match(new JsonObject().put("name", "StarWarsQuery").put("status", "UP"))) {
+        if (record.match(new JsonObject().put("name", "DroidsQuery").put("status", "UP"))) {
             String schemaName = record.getName()  // same as root query name in GraphQL schema
-            String graphQLQuery = "foo bar";      // your query here..
+            String graphQLQuery = "query GetDroidNameR2(\\$id: String!) {\n" +
+                                  "    droid(id: \\$id) {\n" +
+                                  "        name\n" +
+                                  "    }\n" +
+                                  "}";
             JsonObject expected = new JsonObject();
 
             executeQuery(discoveryName, schemaName, query, null, rh -> {
@@ -370,7 +374,8 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
                     QueryResult result = rh.result();
                     if (result.isSucceeded()) {
                         JsonObject queryData = result.getData();
-                        // Do something interesting with your data..
+                        // Returns: {"droid":{"name": "R2-D2"}}
+                        // Now do something interesting with your data..
                     } else {
                         List<QueryError> errors = result.getErrors();
                         LOG.error("Failed to execute GraphQL query with " + errors.size() + " parse errors);

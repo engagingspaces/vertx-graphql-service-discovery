@@ -19,7 +19,7 @@ artifacts {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId project.name
+            artifactId "vertx-$archivesBaseName"
             from components.java
 
             artifact sourcesJar {
@@ -31,7 +31,7 @@ publishing {
             pom.withXml {
                 asNode().children().last() + {
                     def builder = delegate
-                    builder.name project.name
+                    builder.name projectTitle
                     builder.description projectDescription
                     builder.url 'https://github.com/engagingspaces/vertx-graphql-service-discovery'
                     builder.licenses {
@@ -50,6 +50,9 @@ publishing {
                         builder.developer {
                             builder.id 'aschrijver'
                             builder.name 'Arnold Schrijver'
+                            builder.url 'https://github.com/aschrijver/'
+                            builder.organization 'engagingspaces'
+                            builder.organizationUrl 'https://github.com/engagingspaces/'
                         }
                     }
                 }

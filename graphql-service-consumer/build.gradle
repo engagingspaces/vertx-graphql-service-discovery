@@ -2,11 +2,11 @@ apply from: "$rootProject.projectDir/gradle/coverage.gradle"
 apply from: "$rootProject.projectDir/gradle/publishing.gradle"
 
 dependencies {
-    compile project(':graphql-core')
+    compile project(':graphql-servicediscovery-core')
 
     testCompile "junit:junit:$junitVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"
 
-    testCompile project(path: ':graphql-publisher')
-    testCompile project(path: ':graphql-publisher', configuration: 'testOutput')
+    testCompile project(path: ':graphql-service-publisher')
+    testCompile project(path: ':graphql-service-publisher', configuration: 'testOutput')
 }

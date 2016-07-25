@@ -2,7 +2,7 @@ apply from: "$rootProject.projectDir/gradle/coverage.gradle"
 apply from: "$rootProject.projectDir/gradle/publishing.gradle"
 
 dependencies {
-    compile project(':graphql-core')
+    compile project(':graphql-servicediscovery-core')
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-service-discovery:$vertxVersion"
     compile "com.graphql-java:graphql-java:$graphqlVersion"

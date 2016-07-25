@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':graphql-consumer')
+    compile project(':graphql-service-consumer')
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "junit:junit:$junitVersion"
 }

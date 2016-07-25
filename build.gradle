@@ -35,9 +35,10 @@ subprojects {
     }
 
     group = 'io.engagingspaces'
-    version = '0.9.0'
+    version = '0.9.1'
+
     sourceCompatibility = 1.8
-    archivesBaseName = "vertx-$name-$rootProject.version"
+//    archivesBaseName = "vertx-$name"
 }
 
 task wrapper(type: Wrapper) {
