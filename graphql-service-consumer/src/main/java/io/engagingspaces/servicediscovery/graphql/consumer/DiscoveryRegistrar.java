@@ -34,7 +34,7 @@ public class DiscoveryRegistrar extends AbstractRegistrar<DiscoveryRegistration>
 
     private final SchemaMessageConsumers eventManager;
 
-    private DiscoveryRegistrar(Vertx vertx) {
+    protected DiscoveryRegistrar(Vertx vertx) {
         super(vertx);
         this.eventManager = new SchemaMessageConsumers(vertx);
     }
