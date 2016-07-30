@@ -8,7 +8,7 @@
 This library allows you to publish GraphQL schema's as independent services in your Vert.x based microservices environment and execute queries from remote service clients over the (local or clustered) Vert.x event bus.
 The library deals with the transfer of GraphQL query strings to the appropriate service, and returning of Json-formatted query results, or a list of parse errors in case of parse errors.
 
-**Note**: While code samples are in Java, service discovery clients can be implemented in any JVM language supported by [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale).
+**Note**: Code samples are in Java, but clients can be created in any JVM language supported by [Vert.x](#vertx---building-reactive-polyglot-applications-at-scale).
 
 ## Table of contents
 
@@ -404,11 +404,13 @@ public class StarWarsClient extends AbstractVerticle implements SchemaConsumer {
 }
 
 ```
-Also take a look at the [example code](https://github.com/engagingspaces/vertx-graphql-service-discovery/tree/master/examples) in the project.
 
 ### Using the `GraphQLClient` directly
 
-When not using a consumer you can also invoke a static method on `GraphQLClient` to execute a query or just retrieve the `Queryable` service proxy interface. For all calls to the graphql client you need to provide your own service discovery instance, as well as a published `graphql-service` record. Also you have to manage all resources and discovery event subscriptions yourself.
+When not using a consumer you can also invoke a static method on `GraphQLClient` to execute a query or just retrieve
+the `Queryable` service proxy interface. For all calls to the graphql client you need to provide your own service
+discovery instance, as well as a published `graphql-service` record. Also you have to manage all resources and
+discovery event subscriptions yourself.
 
 ```java
 GraphQLClient.executeQuery(serviceDiscoveryFor(HUMANS), record, query, rh -> {
@@ -419,6 +421,10 @@ GraphQLClient.executeQuery(serviceDiscoveryFor(HUMANS), record, query, rh -> {
     }
 });
 ```
+
+## Example code
+
+Example code can be found in a separate project at [vertx-graphql-testdata](https://github.com/engagingspaces/vertx-graphql-testdata)
 
 ## Compatibility
 

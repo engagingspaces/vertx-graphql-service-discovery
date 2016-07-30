@@ -1,5 +1,4 @@
 rootProject.name='vertx-graphql-service-discovery'
 
-include 'graphql-servicediscovery-core', 'graphql-service-publisher', 'graphql-service-consumer',
-        ':examples:droids-microservice', ':examples:starwars-microservice', ':examples:starwars-client'
+include 'graphql-servicediscovery-core', 'graphql-service-publisher', 'graphql-service-consumer'
 
