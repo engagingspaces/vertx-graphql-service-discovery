@@ -26,6 +26,7 @@ The library deals with the transfer of GraphQL query strings to the appropriate 
 - [Consuming and querying a GraphQL service](#consuming-and-querying-a-graphql-service)
     - [Using a `SchemaConsumer` implemention](#using-a-schema-consumer-implementation)
     - [Using the `GraphQLClient` directly](#using-the-graphqlclient-directly)
+    - [Example code](#example-code)
 - [Compatibility](#compatibility)
 - [Known issues](#known-issues)
 - [Contributing](#contributing)
@@ -34,7 +35,7 @@ The library deals with the transfer of GraphQL query strings to the appropriate 
 
 ## Technology
 
-Vert.x GraphQL Service discovery is implemented in Java 8 and based on the interesting and innovative technologies [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension to the recently released (as of version `3.3.0`) [Vert.x Service discovery](http://vertx.io/docs/vertx-service-discovery/java/) module (one of a range of different microservices modules that were introduced with this release) 
+Vert.x GraphQL Service discovery is implemented in Java 8 and based on the interesting and innovative technologies [Vert.x](http://vertx.io/) from [Eclipse](http://www.eclipse.org/) and [GraphQL](http://graphql.org/) from [Facebook](https://www.facebook.com/). The code is an extension to the recently released (as of version `3.3.0`) [Vert.x Service discovery](http://vertx.io/docs/vertx-service-discovery/java/) module (one of a range of different microservices modules that were introduced with this release)
 
 ### Vert.x - Building reactive polyglot applications at scale
 
@@ -44,7 +45,7 @@ With Vert.x you run your code in so-called Verticles that are guaranteed to run 
 
 Also Vert.x is polyglot which enables you to write verticles in any JVM-based programming language. There is out-of-the-box support for Java, JavaScript, Groovy, Ruby, Ceylon and Scala). After creating your code using your favourite language it can seamlessly interoperate with other Vert.x verticles written in different languages.
 
-Finally Vert.x's modular and and non-opinionated toolkit design makes it very versatile and widely applicable. Where possible Vert.x lets you choose your own technologies and development practices. The toolkit comes with [many standard modules](http://vertx.io/docs/#explore) out of the box that provide additional features that you can add as needed. 
+Finally Vert.x's modular and and non-opinionated toolkit design makes it very versatile and widely applicable. Where possible Vert.x lets you choose your own technologies and development practices. The toolkit comes with [many standard modules](http://vertx.io/docs/#explore) out of the box that provide additional features that you can add as needed.
 But adding additional modules is entirely optional. You can readily start with a single dependency on the light-weight [Vert.x Core](http://vertx.io/docs/vertx-core/java/) module, and run it as stand-alone service or fully embedded in your code, hidden from clients. Spinning up a full-blown Netty-based HTTP server then requires just 3 lines of code (or a single line if you value conciseness above readibility. Scala users, take note! :wink: :wink:).
 
 #### More information
@@ -71,10 +72,10 @@ GraphQL allows you to:
 - Optimize the communication between clients and servers and greatly simplify caching strategies
  - Instead of many HTTP requests to receive some aggregate data set, a full resultset can be retrieved in a single query call
  - Instead of complex cache storage and pruning strategies, the GraphQL query language allows much easier cache management
-  
+
 The term 'GraphQL query' might lead you to believe that GraphQL is only about querying. The term is a bit misleading, because there are also so-called *mutation queries* where you can modify data. You could compare mutations and queries to *commands* and *queries* in a CQRS design. The GraphqL queries are similar to the de-normalized data projections that live on the query-side, except that with GraphQL you don't have to define the projections on the server-side. The front-end developer is in charge here.
 
-GraphQL is not a golden hammer however, and there are still valid cases where more restful API designs are in place. Also GraphQL is still relatively new and under heavy development. So do your homework well. 
+GraphQL is not a golden hammer however, and there are still valid cases where more restful API designs are in place. Also GraphQL is still relatively new and under heavy development. So do your homework well.
 
 #### More information
 
@@ -92,7 +93,7 @@ The features described above already make Vert.x ideally suited as enabling tech
 
 Currently this project is using the [graphq-java](https://github.com/graphql-java/graphql-java) library implementation developed for Java 6. A Vert.x-based reimplementation might outperform (see [benchmarks](https://www.techempower.com/benchmarks/)) other current GraphQL server implementations (maybe not the [Go-based ones](https://github.com/chentsulin/awesome-graphql#lib-go), but that would be an interesting battle) and it would be the first fully asynchronous GraphQL server.
 
-Vert.x itself is an ideal server implementation platform for GraphQL. Most server implementations and almost all examples you'll find on the internet are using [node](https://nodejs.org/en/) and [express](https://expressjs.com/). 
+Vert.x itself is an ideal server implementation platform for GraphQL. Most server implementations and almost all examples you'll find on the internet are using [node](https://nodejs.org/en/) and [express](https://expressjs.com/).
 
 GraphQL also brings something extra to Vert.x:
 
@@ -108,10 +109,10 @@ With GraphQL and this project you get an additional `graphql-service` discovery 
 
 Publishers of a GraphQL schema need to add a dependency on `vertx-graphql-service-publisher`:
 ```
-repositories { 
-  maven { 
-    url "http://dl.bintray.com/engagingspaces/maven" 
-  } 
+repositories {
+  maven {
+    url "http://dl.bintray.com/engagingspaces/maven"
+  }
 }
 
 dependencies {
@@ -120,10 +121,10 @@ dependencies {
 ```
 Consumers of a published GraphQL service that want to execute queries need a dependency on `vertx-graphql-service-consumer`:
 ```
-repositories { 
-  maven { 
-    url "http://dl.bintray.com/engagingspaces/maven" 
-  } 
+repositories {
+  maven {
+    url "http://dl.bintray.com/engagingspaces/maven"
+  }
 }
 
 dependencies {
@@ -135,7 +136,7 @@ dependencies {
 In order to resolve the Bintray dependencies the following repository settings can be added to your `settings.xml`:
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
-<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0' 
+<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
           xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
           xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
                                   http://maven.apache.org/xsd/settings-1.0.0.xsd'>
@@ -151,7 +152,7 @@ In order to resolve the Bintray dependencies the following repository settings c
                     <url>http://dl.bintray.com/engagingspaces/maven</url>
                 </repository>
             </repositories>
-            
+
             <pluginRepositories>
                 <pluginRepository>
                     <snapshots>
@@ -165,7 +166,7 @@ In order to resolve the Bintray dependencies the following repository settings c
             <id>bintray</id>
         </profile>
     </profiles>
-    
+
     <activeProfiles>
         <activeProfile>bintray</activeProfile>
     </activeProfiles>
@@ -214,7 +215,7 @@ public class DroidsSchema implements SchemaDefinition {
     public GraphQLSchema schema() {
         return droidsSchema;
     }
-    
+
     static final GraphQLObjectType queryType = newObject()
             .name("QueryType") // Query name == graphql service name. Suffix of proxy address
             .field(newFieldDefinition()
@@ -267,13 +268,13 @@ public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
 
     @Override
     public void schemaPublished(SchemaRegistration registration) {
-        LOG.info("Schema " + registration.getSchemaName() + " is now " + 
+        LOG.info("Schema " + registration.getSchemaName() + " is now " +
                 registration.getRecord().getStatus());
     }
 
     @Override
     public void schemaUnpublished(SchemaRegistration registration) {
-        LOG.info("Schema " + registration.getSchemaName() + " was " + 
+        LOG.info("Schema " + registration.getSchemaName() + " was " +
                 registration.getRecord().getStatus());
     }
 
@@ -314,7 +315,7 @@ When publishing this way without using a schema publisher be aware that you must
 
 ## Consuming and querying a GraphQL service
 
-Just as with publishing there are multiple ways to consume a GraphQL service that was published. Most convenient once again is using a `SchemaConsumer`, but you can also query directly using one of the `GraphQLClient` static methods or even by using standard [vertx-service-discovery](https://github.com/vert-x3/vertx-service-discovery) to get to a `Queryable` service proxy manually. 
+Just as with publishing there are multiple ways to consume a GraphQL service that was published. Most convenient once again is using a `SchemaConsumer`, but you can also query directly using one of the `GraphQLClient` static methods or even by using standard [vertx-service-discovery](https://github.com/vert-x3/vertx-service-discovery) to get to a `Queryable` service proxy manually.
 
 ### Using a `SchemaConsumer` implemention
 
@@ -422,9 +423,9 @@ GraphQLClient.executeQuery(serviceDiscoveryFor(HUMANS), record, query, rh -> {
 });
 ```
 
-## Example code
+### Example code
 
-Example code can be found in a separate project at [vertx-graphql-testdata](https://github.com/engagingspaces/vertx-graphql-testdata)
+Example code can be found in a separate location at [vertx-graphql-testdata](https://github.com/engagingspaces/vertx-graphql-testdata)
 
 ## Compatibility
 
