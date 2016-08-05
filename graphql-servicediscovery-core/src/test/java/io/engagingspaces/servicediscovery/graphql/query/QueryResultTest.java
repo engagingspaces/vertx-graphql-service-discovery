@@ -22,9 +22,9 @@ import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaDefinition;
-import io.engagingspaces.servicediscovery.graphql.utils.MapBuilder;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import org.example.servicediscovery.server.utils.MapBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

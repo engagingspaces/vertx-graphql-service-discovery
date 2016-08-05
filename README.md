@@ -217,7 +217,7 @@ public class DroidsSchema implements SchemaDefinition {
     }
 
     static final GraphQLObjectType queryType = newObject()
-            .name("QueryType") // Query name == graphql service name. Suffix of proxy address
+            .name("DroidQueries") // Query name == graphql service name. Suffix of proxy address
             .field(newFieldDefinition()
                     .name("droid")
                     .type(droidType)

@@ -16,8 +16,8 @@
 
 package io.engagingspaces.servicediscovery.graphql.publisher;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.data.StarWarsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
+import org.example.servicediscovery.server.starwars.StarWarsSchema;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;

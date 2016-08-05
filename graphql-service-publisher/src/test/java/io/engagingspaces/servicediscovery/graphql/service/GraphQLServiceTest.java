@@ -16,8 +16,8 @@
 
 package io.engagingspaces.servicediscovery.graphql.service;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.data.StarWarsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
+import org.example.servicediscovery.server.starwars.StarWarsSchema;
 import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
 import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaRegistration;
@@ -49,7 +49,7 @@ public class GraphQLServiceTest {
 
     private static final String GRAPHQL_QUERY =
             "        query CheckTypeOfR2 {\n" +
-            "            hero {\n" +
+            "            droidHero {\n" +
             "                __typename\n" +
             "                name\n" +
             "            }\n" +
@@ -143,7 +143,7 @@ public class GraphQLServiceTest {
             // Check standard metadata that is added (for future use)
             JsonArray queries = record.getMetadata().getJsonArray(SchemaRegistration.METADATA_QUERIES);
             JsonArray mutations = record.getMetadata().getJsonArray(SchemaRegistration.METADATA_MUTATIONS);
-            context.assertEquals(new JsonArray("[ \"hero\", \"human\", \"droid\"]"), queries);
+            context.assertEquals(new JsonArray("[ \"hero\", \"human\" ]"), queries);
             context.assertEquals(new JsonArray(), mutations);
 
             async.complete();
