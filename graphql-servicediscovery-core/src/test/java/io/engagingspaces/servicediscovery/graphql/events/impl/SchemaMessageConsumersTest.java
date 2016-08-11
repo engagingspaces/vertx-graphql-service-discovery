@@ -16,7 +16,7 @@
 
 package io.engagingspaces.servicediscovery.graphql.events.impl;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.servicediscovery.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.servicediscovery.graphql.events.SchemaUsageHandler;
 import io.vertx.core.Vertx;
@@ -83,20 +83,20 @@ public class SchemaMessageConsumersTest {
 
     @Test
     public void should_Manage_Service_Consumers() {
-        messageConsumers.registerServiceConsumer("QueryType", DroidsSchema.get());
+        messageConsumers.registerServiceConsumer("DroidQueries", DroidsSchema.get());
         assertEquals(1, messageConsumers.getConsumers().size());
-        assertTrue(messageConsumers.getConsumers().get("QueryType").isRegistered());
+        assertTrue(messageConsumers.getConsumers().get("DroidQueries").isRegistered());
 
-        messageConsumers.registerServiceConsumer("QueryType", DroidsSchema.get());
+        messageConsumers.registerServiceConsumer("DroidQueries", DroidsSchema.get());
         assertEquals(1, messageConsumers.getConsumers().size());
 
-        messageConsumers.unregisterConsumer("QueryType");
+        messageConsumers.unregisterConsumer("DroidQueries");
         assertEquals(1, messageConsumers.getConsumers().size());
 
         messageConsumers.registerConsumer("announce", (SchemaAnnounceHandler) rh -> {});
         assertEquals(2, messageConsumers.getConsumers().size());
 
-        messageConsumers.unregisterConsumer("QueryType");
+        messageConsumers.unregisterConsumer("DroidQueries");
         assertEquals(1, messageConsumers.getConsumers().size());
 
         messageConsumers.close();

@@ -81,6 +81,20 @@ Gets the errors that occurred on query execution, if the GraphQL query was not s
 +++
 |===
 
+[[SchemaMetadata]]
+== SchemaMetadata
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[internal]]`internal`|`Boolean`|
++++
+Marks the schema as either internal (the default) or not.
++++
+|===
+
 [[SchemaReferenceData]]
 == SchemaReferenceData
 

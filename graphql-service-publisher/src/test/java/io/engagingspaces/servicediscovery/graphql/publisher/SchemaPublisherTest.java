@@ -16,7 +16,7 @@
 
 package io.engagingspaces.servicediscovery.graphql.publisher;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
@@ -78,10 +78,10 @@ public class SchemaPublisherTest {
 
                 Record record = registration.getRecord();
                 context.assertEquals(Queryable.SERVICE_TYPE, record.getType());
-                context.assertEquals("QueryType", record.getName());
+                context.assertEquals("DroidQueries", record.getName());
                 context.assertEquals(registration.getSchemaName(), record.getName());
                 context.assertNotNull(record.getRegistration());
-                context.assertEquals(Queryable.ADDRESS_PREFIX + ".QueryType", record.getLocation().getString(Record.ENDPOINT));
+                context.assertEquals(Queryable.ADDRESS_PREFIX + ".DroidQueries", record.getLocation().getString(Record.ENDPOINT));
                 context.assertEquals(Status.UP, record.getStatus());
 
                 ServiceDiscoveryOptions options = registration.getDiscoveryOptions();
@@ -90,10 +90,10 @@ public class SchemaPublisherTest {
                 context.assertEquals("theUsageAddress", options.getUsageAddress());
 
                 assertNotNull(registration.getServiceConsumer());
-                assertEquals(Queryable.ADDRESS_PREFIX + ".QueryType", registration.getServiceConsumer().address());
+                assertEquals(Queryable.ADDRESS_PREFIX + ".DroidQueries", registration.getServiceConsumer().address());
                 assertTrue(registration.getServiceConsumer().isRegistered());
 
-                schemaPublisher.getDiscovery("theDiscovery").get().unpublish("QueryType", rh2 -> {
+                schemaPublisher.getDiscovery("theDiscovery").get().unpublish("DroidQueries", rh2 -> {
                     assertFalse(rh2.succeeded());
                     schemaPublisher.getDiscovery("theDiscovery").get().unpublish(record.getRegistration(), rh3 -> {
                         assertTrue(rh3.succeeded());

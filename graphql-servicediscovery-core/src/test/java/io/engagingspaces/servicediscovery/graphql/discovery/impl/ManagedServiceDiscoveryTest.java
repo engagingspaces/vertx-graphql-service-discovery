@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 @RunWith(VertxUnitRunner.class)
 public class ManagedServiceDiscoveryTest {

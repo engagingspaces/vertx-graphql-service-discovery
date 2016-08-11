@@ -16,7 +16,7 @@
 
 package io.engagingspaces.servicediscovery.graphql.client;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaRegistration;
 import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
 import io.engagingspaces.servicediscovery.graphql.query.Queryable;
@@ -48,7 +48,7 @@ public class GraphQLClientTest {
 
     private static final String DROIDS_QUERY =
             "        query CheckTypeOfR2 {\n" +
-            "            hero {\n" +
+            "            droidHero {\n" +
             "                __typename\n" +
             "                name\n" +
             "            }\n" +
@@ -101,9 +101,9 @@ public class GraphQLClientTest {
                     context.assertNotNull(queryResult.getErrors());
                     context.assertTrue(queryResult.getErrors().isEmpty());
                     JsonObject data = queryResult.getData();
-                    context.assertNotNull(data.getJsonObject("hero"));
-                    context.assertEquals("Droid", data.getJsonObject("hero").getString("__typename"));
-                    context.assertEquals("R2-D2", data.getJsonObject("hero").getString("name"));
+                    context.assertNotNull(data.getJsonObject("droidHero"));
+                    context.assertEquals("Droid", data.getJsonObject("droidHero").getString("__typename"));
+                    context.assertEquals("R2-D2", data.getJsonObject("droidHero").getString("name"));
                     async.complete();
                 });
     }
@@ -113,7 +113,7 @@ public class GraphQLClientTest {
         GraphQLClient.executeQuery(discovery, record, DROIDS_QUERY, context.asyncAssertSuccess(queryResult -> {
             assertNotNull(queryResult);
             assertTrue(queryResult.isSucceeded());
-            assertNotNull(queryResult.getData().getJsonObject("hero"));
+            assertNotNull(queryResult.getData().getJsonObject("droidHero"));
         }));
     }
 
@@ -154,7 +154,7 @@ public class GraphQLClientTest {
     @Test
     public void should_Find_Service_Proxy_From_Valid_Filter(TestContext context) {
         Async async = context.async();
-        GraphQLClient.getSchemaProxy(discovery, new JsonObject().put("name", "QueryType"), rh -> {
+        GraphQLClient.getSchemaProxy(discovery, new JsonObject().put("name", "DroidQueries"), rh -> {
             if (rh.failed()) {
                 context.fail(rh.cause());
             }
@@ -197,9 +197,9 @@ public class GraphQLClientTest {
 
     @Test
     public void should_Fail_Service_Proxy_With_Record_Of_Wrong_Type(TestContext context) {
-        GraphQLClient.getSchemaProxy(discovery, new Record().setName("QueryType"),
+        GraphQLClient.getSchemaProxy(discovery, new Record().setName("DroidQueries"),
                 context.asyncAssertFailure(ex ->
-                    assertEquals("Record 'QueryType' is of wrong type 'null'. Expected: graphql-service",
+                    assertEquals("Record 'DroidQueries' is of wrong type 'null'. Expected: graphql-service",
                             ex.getMessage())
                 ));
     }
@@ -207,9 +207,9 @@ public class GraphQLClientTest {
     @Test
     public void should_Fail_Service_Proxy_With_Record_Status_Not_UP(TestContext context) {
         GraphQLClient.getSchemaProxy(discovery, new Record()
-                .setName("QueryType").setType(Queryable.SERVICE_TYPE),
+                .setName("DroidQueries").setType(Queryable.SERVICE_TYPE),
                         context.asyncAssertFailure(ex ->
-                            assertEquals("Record status indicates service 'QueryType' is: UNKNOWN. Expected: UP",
+                            assertEquals("Record status indicates service 'DroidQueries' is: UNKNOWN. Expected: UP",
                                     ex.getMessage())
                         ));
     }
@@ -217,9 +217,9 @@ public class GraphQLClientTest {
     @Test
     public void should_Fail_Service_Proxy_With_Record_Not_Registered(TestContext context) {
         GraphQLClient.getSchemaProxy(discovery, new Record()
-                .setName("QueryType").setType(Queryable.SERVICE_TYPE).setStatus(Status.UP),
+                .setName("DroidQueries").setType(Queryable.SERVICE_TYPE).setStatus(Status.UP),
                         context.asyncAssertFailure(ex ->
-                            assertEquals("Record 'QueryType' has no service discovery registration", ex.getMessage())
+                            assertEquals("Record 'DroidQueries' has no service discovery registration", ex.getMessage())
                         ));
     }
 }

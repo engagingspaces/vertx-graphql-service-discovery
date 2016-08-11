@@ -1,7 +1,7 @@
 package io.engagingspaces.servicediscovery.graphql.publisher;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.data.StarWarsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
+import org.example.servicediscovery.server.starwars.StarWarsSchema;
 import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;
@@ -36,11 +36,11 @@ public class SchemaRegistrationTest {
                 .setName("theRecord")
                 .setType(Queryable.SERVICE_TYPE)
                 .setMetadata(new JsonObject().put("publisherId", "thePublisherId"))
-                .setLocation(new JsonObject().put(Record.ENDPOINT, Queryable.ADDRESS_PREFIX + ".QueryType"))
+                .setLocation(new JsonObject().put(Record.ENDPOINT, Queryable.ADDRESS_PREFIX + ".DroidQueries"))
                 .setStatus(Status.UP);
         definition = DroidsSchema.get();
         consumer = ProxyHelper.registerService(Queryable.class,
-                vertx, definition, Queryable.ADDRESS_PREFIX + ".QueryType");
+                vertx, definition, Queryable.ADDRESS_PREFIX + ".DroidQueries");
     }
 
     @After

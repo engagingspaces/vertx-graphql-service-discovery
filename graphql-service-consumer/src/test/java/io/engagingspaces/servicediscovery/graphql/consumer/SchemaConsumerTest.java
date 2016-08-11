@@ -16,7 +16,7 @@
 
 package io.engagingspaces.servicediscovery.graphql.consumer;
 
-import io.engagingspaces.servicediscovery.graphql.data.DroidsSchema;
+import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.servicediscovery.graphql.events.SchemaReferenceData;
 import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
 import io.engagingspaces.servicediscovery.graphql.service.GraphQLService;
@@ -47,7 +47,7 @@ public class SchemaConsumerTest {
 
     private static final String DROIDS_QUERY =
             "        query CheckTypeOfR2 {\n" +
-                    "            hero {\n" +
+                    "            droidHero {\n" +
                     "                __typename\n" +
                     "                name\n" +
                     "            }\n" +
@@ -114,12 +114,12 @@ public class SchemaConsumerTest {
         Async async = context.async();
         vertx.runOnContext(ctx -> {
             SchemaConsumer.startDiscovery(new ServiceDiscoveryOptions().setName("the-discovery"), testClass);
-            testClass.executeQuery("the-discovery", "QueryType", DROIDS_QUERY, rh ->
+            testClass.executeQuery("the-discovery", "DroidQueries", DROIDS_QUERY, rh ->
             {
                 context.assertFalse(rh.succeeded()); // Not yet published
                 GraphQLService.publish(vertx, testClass.getDiscovery("the-discovery").get(), DroidsSchema.get(), rh2 ->
 
-                        testClass.executeQuery("the-discovery", "QueryType", DROIDS_QUERY, rh3 ->
+                        testClass.executeQuery("the-discovery", "DroidQueries", DROIDS_QUERY, rh3 ->
                         {
                             context.assertNotNull(rh3.result());
                             QueryResult queryResult = rh3.result();
@@ -128,9 +128,9 @@ public class SchemaConsumerTest {
                             context.assertNotNull(queryResult.getErrors());
                             context.assertTrue(queryResult.getErrors().isEmpty());
                             JsonObject data = queryResult.getData();
-                            context.assertNotNull(data.getJsonObject("hero"));
-                            context.assertEquals("Droid", data.getJsonObject("hero").getString("__typename"));
-                            context.assertEquals("R2-D2", data.getJsonObject("hero").getString("name"));
+                            context.assertNotNull(data.getJsonObject("droidHero"));
+                            context.assertEquals("Droid", data.getJsonObject("droidHero").getString("__typename"));
+                            context.assertEquals("R2-D2", data.getJsonObject("droidHero").getString("name"));
 
                             SchemaConsumer.close(testClass);
                             assertEquals(0, testClass.managedDiscoveries().size());
