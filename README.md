@@ -247,7 +247,7 @@ The registrar will manage the state of the publisher, consisting of a list of `S
 But providing the instance is all that's needed to get you started:
 
 ```java
-public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
+public class StarWarsServer extends AbstractVerticle implements SchemaPublisher {
 
     private static final Logger LOG = LoggerFactory.getLogger(DroidsServer.class);
     private SchemaRegistrar registrar;  // need to keep hold of registrar reference
@@ -255,15 +255,15 @@ public class DroidsServer extends AbstractVerticle implements SchemaPublisher {
     @Override
     public void start(Future<Void> startFuture) {
         registrar = SchemaRegistrar.create(vertx);
-        SchemaPublisher.publishAll(this, new ServiceDiscoveryOptions()
-                .setName("my-graphql-publisher"), rh -> {
+        SchemaPublisher.publish(this, new ServiceDiscoveryOptions().setName("starwars-service-discovery"),
+                StarWarsSchema.get(), rh -> {
             if (rh.succeeded()) {
-                LOG.info("Published Droids schema to StarWars world...");
+                LOG.info("Published StarWars schema...");
                 startFuture.complete();
             } else {
                 startFuture.fail(rh.cause());
             }
-        }, DroidsSchema.get());
+        });
     }
 
     @Override
