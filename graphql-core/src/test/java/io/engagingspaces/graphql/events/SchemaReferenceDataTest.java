@@ -16,7 +16,7 @@
 
 package io.engagingspaces.graphql.events;
 
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.json.JsonObject;
 import org.junit.Test;
 

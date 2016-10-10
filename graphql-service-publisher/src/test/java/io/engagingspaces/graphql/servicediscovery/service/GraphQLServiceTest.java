@@ -16,10 +16,9 @@
 
 package io.engagingspaces.graphql.servicediscovery.service;
 
-import org.example.servicediscovery.server.droids.DroidsSchema;
-import org.example.servicediscovery.server.starwars.StarWarsSchema;
 import io.engagingspaces.graphql.query.QueryResult;
 import io.engagingspaces.graphql.query.Queryable;
+import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
@@ -38,6 +37,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
+import static org.example.graphql.testdata.starwars.StarWarsSchema.starWarsSchema;
 
 /**
  * Tests for graphql service interface static members.
@@ -58,7 +60,7 @@ public class GraphQLServiceTest {
     private Vertx vertx;
     private ServiceDiscovery discovery;
     private ServiceDiscoveryOptions options;
-    private String schemaName = DroidsSchema.get().schema().getQueryType().getName();
+    private String schemaName = droidsSchema.getQueryType().getName();
 
     @Before
     public void setUp() {
@@ -76,7 +78,7 @@ public class GraphQLServiceTest {
     @Test
     public void should_Publish_Queryable_Service_Proxy_From_Schema_Definition(TestContext context) {
         Async async = context.async();
-        io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, DroidsSchema.get(), publishResultHandler -> {
+        GraphQLService.publish(vertx, discovery, droidsSchema, options, null, publishResultHandler -> {
             context.assertTrue(publishResultHandler.succeeded());
             context.assertNotNull(publishResultHandler.result());
 
@@ -88,7 +90,7 @@ public class GraphQLServiceTest {
             context.assertNull(schema.getDiscoveryOptions());
             context.assertNotNull(schema.getServiceConsumer());
             context.assertTrue(schema.getServiceConsumer().isRegistered());
-            context.assertEquals(Queryable.ADDRESS_PREFIX + "" + schemaName, schema.getServiceConsumer().address());
+            context.assertEquals(Queryable.ADDRESS_PREFIX + "." + schemaName, schema.getServiceConsumer().address());
             context.assertNotNull(schema.getDiscovery());
 
             Record record = schema.getRecord();
@@ -96,7 +98,7 @@ public class GraphQLServiceTest {
             context.assertNotNull(record.getRegistration());
             context.assertEquals(Status.UP, record.getStatus());
             context.assertEquals(schemaName, record.getName());
-            context.assertEquals(Queryable.ADDRESS_PREFIX + "" + schemaName,
+            context.assertEquals(Queryable.ADDRESS_PREFIX + "." + schemaName,
                     record.getLocation().getString(Record.ENDPOINT));
             context.assertNotNull(record.getMetadata());
             context.assertNotNull(record.getMetadata().getJsonArray(SchemaRegistration.METADATA_QUERIES));
@@ -132,9 +134,10 @@ public class GraphQLServiceTest {
     @Test
     public void should_Publish_Schema_Definition_With_Metadata(TestContext context) {
         Async async = context.async();
-        JsonObject metadata = new JsonObject().put("someString", "someValue").put("someObject", new JsonObject());
+        SchemaMetadata metadata = SchemaMetadata.create(new JsonObject()
+                .put("someString", "someValue").put("someObject", new JsonObject()));
 
-        io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, StarWarsSchema.get(), metadata, rh -> {
+        GraphQLService.publish(vertx, discovery, starWarsSchema, options, metadata, rh -> {
             context.assertTrue(rh.succeeded());
             Record record =  rh.result().getRecord();
             context.assertEquals("someValue", record.getMetadata().getString("someString"));
@@ -153,10 +156,10 @@ public class GraphQLServiceTest {
     @Test
     public void should_Unpublish_Previously_Published_Schema_Definition(TestContext context) {
         Async async = context.async();
-        io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, StarWarsSchema.get(), rh -> {
+        GraphQLService.publish(vertx, discovery, starWarsSchema, options, null, rh -> {
             context.assertTrue(rh.succeeded());
             SchemaRegistration registration = rh.result();
-            io.engagingspaces.graphql.servicediscovery.service.GraphQLService.unpublish(registration, unpublishHandler -> {
+            GraphQLService.unpublish(registration, unpublishHandler -> {
                 context.assertTrue(unpublishHandler.succeeded());
                 context.assertFalse(registration.getServiceConsumer().isRegistered());
 
@@ -174,11 +177,11 @@ public class GraphQLServiceTest {
     @Ignore("Need to investigate proxy creation and desired behavior of duplicate publications")
     public void should_Have_Same_Service_Proxy_When_Published_More_Than_Once(TestContext context) {
         Async async = context.async();
-        io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, StarWarsSchema.get(), rh -> {
+        GraphQLService.publish(vertx, discovery, starWarsSchema, options, null, rh -> {
             context.assertTrue(rh.succeeded());
             SchemaRegistration registration1 = rh.result();
 
-            io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, StarWarsSchema.get(), rh2 -> {
+            GraphQLService.publish(vertx, discovery, starWarsSchema, options, null, rh2 -> {
                 context.assertTrue(rh.succeeded());
                 SchemaRegistration registration2 = rh.result();
                 context.assertEquals(registration1, registration2);
@@ -202,12 +205,12 @@ public class GraphQLServiceTest {
     @Test
     public void should_Return_Failure_Un_Publishing_Unknown_Record(TestContext context) {
         Async async = context.async();
-        io.engagingspaces.graphql.servicediscovery.service.GraphQLService.publish(vertx, discovery, StarWarsSchema.get(), rh ->
+        GraphQLService.publish(vertx, discovery, starWarsSchema, options, null, rh ->
         {
             context.assertTrue(rh.succeeded());
             SchemaRegistration registration1 = rh.result();
 
-            io.engagingspaces.graphql.servicediscovery.service.GraphQLService.unpublish(SchemaRegistration.create(registration1.getDiscovery(),
+            GraphQLService.unpublish(SchemaRegistration.create(registration1.getDiscovery(),
                     registration1.getDiscoveryOptions(), new Record(registration1.getRecord()).setRegistration("foo"),
                     registration1.getSchemaDefinition(), registration1.getServiceConsumer()), rh2 ->
             {

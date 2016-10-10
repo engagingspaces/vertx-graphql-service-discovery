@@ -39,7 +39,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(VertxUnitRunner.class)
 public class GraphQLServiceImplTest {
 
-    private io.engagingspaces.graphql.servicediscovery.service.impl.GraphQLServiceImpl graphQLService;
+    private GraphQLServiceImpl graphQLService;
 
     private Vertx vertx;
     private ServiceDiscovery discovery;

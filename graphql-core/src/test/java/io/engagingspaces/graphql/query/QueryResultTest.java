@@ -21,10 +21,10 @@ import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaDefinition;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
-import org.example.servicediscovery.server.utils.MapBuilder;
+import org.example.graphql.testdata.utils.MapBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

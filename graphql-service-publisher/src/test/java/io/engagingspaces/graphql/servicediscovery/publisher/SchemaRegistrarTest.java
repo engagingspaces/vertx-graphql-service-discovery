@@ -16,10 +16,6 @@
 
 package io.engagingspaces.graphql.servicediscovery.publisher;
 
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar;
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration;
-import org.example.servicediscovery.server.droids.DroidsSchema;
-import org.example.servicediscovery.server.starwars.StarWarsSchema;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
@@ -31,6 +27,8 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import org.junit.*;
 import org.junit.runner.RunWith;
 
+import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
+import static org.example.graphql.testdata.starwars.StarWarsSchema.starWarsSchema;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -42,7 +40,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(VertxUnitRunner.class)
 public class SchemaRegistrarTest {
 
-    private io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar schemaRegistrar;
+    private SchemaRegistrar schemaRegistrar;
 
     private Vertx vertx;
     private ServiceDiscoveryOptions options;
@@ -57,7 +55,7 @@ public class SchemaRegistrarTest {
         vertx = rule.vertx();
         options = new ServiceDiscoveryOptions().setName("theDiscovery")
                 .setAnnounceAddress("announceAddress").setUsageAddress("usageAddress");
-        schemaRegistrar = io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar.create(vertx);
+        schemaRegistrar = SchemaRegistrar.create(vertx);
         schemaPublisher = new TestClass(schemaRegistrar);
     }
 
@@ -71,7 +69,7 @@ public class SchemaRegistrarTest {
     public void should_Manage_Schema_Registration_And_Close_Properly(TestContext context) {
         Async async = context.async();
         context.assertNotNull(schemaRegistrar.getPublisherId());
-        schemaRegistrar = io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar.create(vertx, "thePublisherId");
+        schemaRegistrar = SchemaRegistrar.create(vertx, "thePublisherId");
         context.assertEquals("thePublisherId", schemaRegistrar.getPublisherId());
 
         ServiceDiscovery discovery = schemaRegistrar.getOrCreateDiscovery(options);
@@ -81,23 +79,23 @@ public class SchemaRegistrarTest {
 
         // Fans of nested handlers, take note! ;)
         // Publish 1
-        schemaPublisher.publish(options, DroidsSchema.get(), rh -> {
+        schemaPublisher.publish(options, droidsSchema, rh -> {
             context.assertTrue(rh.succeeded());
             context.assertEquals(1, schemaPublisher.registeredSchemas().size());
 
             // Publish 2
-            schemaPublisher.publish(options, StarWarsSchema.get(), rh2 -> {
+            schemaPublisher.publish(options, starWarsSchema, rh2 -> {
                 context.assertTrue(rh2.succeeded());
                 context.assertEquals(2, schemaPublisher.registeredSchemas().size());
 
                 // Re-publish 1. No change, already published
-                schemaPublisher.publish(options, DroidsSchema.get(), rh3 -> {
+                schemaPublisher.publish(options, droidsSchema, rh3 -> {
                     context.assertFalse(rh3.succeeded());
                     context.assertEquals(2, schemaPublisher.registeredSchemas().size());
 
                     // Publish 1 to different repository. Creates new registrations 1'
                     schemaPublisher.publish(new ServiceDiscoveryOptions(options).setName("theOtherRegistry"),
-                            DroidsSchema.get(), rh4 -> {
+                            droidsSchema, rh4 -> {
                         context.assertTrue(rh4.succeeded());
                         context.assertEquals(3, schemaPublisher.registeredSchemas().size());
 
@@ -114,7 +112,7 @@ public class SchemaRegistrarTest {
                                 assertEquals(1, schemaPublisher.managedDiscoveries().size());
 
                                 // Publish 1 again
-                                schemaPublisher.publish(options, DroidsSchema.get(), rh7 -> {
+                                schemaPublisher.publish(options, droidsSchema, rh7 -> {
                                     context.assertTrue(rh7.succeeded());
                                     assertEquals(2, schemaPublisher.managedDiscoveries().size());
 
@@ -138,7 +136,7 @@ public class SchemaRegistrarTest {
     public void should_Manage_Schema_Registration_And_Close_Properly2(TestContext context) {
         Async async = context.async(6);
         context.assertNotNull(schemaRegistrar.getPublisherId());
-        schemaRegistrar = io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar.create(vertx, "thePublisherId");
+        schemaRegistrar = SchemaRegistrar.create(vertx, "thePublisherId");
         context.assertEquals("thePublisherId", schemaRegistrar.getPublisherId());
 
         ServiceDiscovery discovery = schemaRegistrar.getOrCreateDiscovery(options);
@@ -147,19 +145,19 @@ public class SchemaRegistrarTest {
         context.assertEquals(0, schemaRegistrar.registrations().size());
 
         // Publish 1
-        schemaPublisher.publish(options, DroidsSchema.get(), rh -> {
+        schemaPublisher.publish(options, droidsSchema, rh -> {
             context.assertTrue(rh.succeeded());
             context.assertEquals(1, schemaPublisher.registeredSchemas().size());
             async.countDown();
 
             // Publish 2
-            schemaPublisher.publish(options, StarWarsSchema.get(), rh2 -> {
+            schemaPublisher.publish(options, starWarsSchema, rh2 -> {
                 context.assertTrue(rh2.succeeded());
                 context.assertEquals(2, schemaPublisher.registeredSchemas().size());
                 async.countDown();
 
                 // Re-publish 1 and 2. No change, already published
-                schemaPublisher.publish(options, DroidsSchema.get(), rh3 -> {
+                schemaPublisher.publish(options, droidsSchema, rh3 -> {
                     context.assertTrue(rh3.succeeded());
                     context.assertEquals(2, schemaPublisher.registeredSchemas().size());
                     async.countDown();
@@ -186,17 +184,17 @@ public class SchemaRegistrarTest {
                                 async.countDown();
                             });
                         });
-                    }, StarWarsSchema.get(), DroidsSchema.get());
+                    }, starWarsSchema, droidsSchema);
                 });
             });
         });
     }
 
-    private class TestClass implements io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher {
+    private class TestClass implements SchemaPublisher {
 
-        private io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar registrar;
+        private SchemaRegistrar registrar;
 
-        public TestClass(io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar registrar) {
+        public TestClass(SchemaRegistrar registrar) {
             this.registrar = registrar;
         }
 
@@ -206,7 +204,7 @@ public class SchemaRegistrarTest {
         }
 
         @Override
-        public void schemaPublished(io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration registration) {
+        public void schemaPublished(SchemaRegistration registration) {
 
         }
 

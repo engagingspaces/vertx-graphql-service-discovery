@@ -16,7 +16,9 @@
 
 package io.engagingspaces.graphql.events.impl;
 
-import org.example.servicediscovery.server.droids.DroidsSchema;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
+import io.engagingspaces.graphql.schema.SchemaMetadata;
+import io.vertx.core.json.JsonObject;
 import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.graphql.events.SchemaUsageHandler;
 import io.vertx.core.Vertx;
@@ -26,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -83,11 +86,14 @@ public class SchemaMessageConsumersTest {
 
     @Test
     public void should_Manage_Service_Consumers() {
-        messageConsumers.registerServiceConsumer("DroidQueries", DroidsSchema.get());
+        SchemaDefinition definition = SchemaDefinition
+                .createInstance(droidsSchema, SchemaMetadata.create());
+
+        messageConsumers.registerServiceConsumer("DroidQueries", definition);
         assertEquals(1, messageConsumers.getConsumers().size());
         assertTrue(messageConsumers.getConsumers().get("DroidQueries").isRegistered());
 
-        messageConsumers.registerServiceConsumer("DroidQueries", DroidsSchema.get());
+        messageConsumers.registerServiceConsumer("DroidQueries", definition);
         assertEquals(1, messageConsumers.getConsumers().size());
 
         messageConsumers.unregisterConsumer("DroidQueries");

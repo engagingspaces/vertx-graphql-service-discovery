@@ -16,7 +16,6 @@
 
 package io.engagingspaces.graphql.servicediscovery.consumer;
 
-import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.graphql.events.SchemaReferenceData;
 import io.engagingspaces.graphql.query.QueryResult;
 import io.engagingspaces.graphql.servicediscovery.service.GraphQLService;
@@ -34,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -117,25 +117,26 @@ public class SchemaConsumerTest {
             testClass.executeQuery("the-discovery", "DroidQueries", DROIDS_QUERY, rh ->
             {
                 context.assertFalse(rh.succeeded()); // Not yet published
-                GraphQLService.publish(vertx, testClass.getDiscovery("the-discovery").get(), DroidsSchema.get(), rh2 ->
+                GraphQLService.publish(vertx, testClass.getDiscovery("the-discovery").get(),
+                        droidsSchema, null, null, rh2 ->
 
-                        testClass.executeQuery("the-discovery", "DroidQueries", DROIDS_QUERY, rh3 ->
-                        {
-                            context.assertNotNull(rh3.result());
-                            QueryResult queryResult = rh3.result();
-                            context.assertTrue(queryResult.isSucceeded());
-                            context.assertNotNull(queryResult.getData());
-                            context.assertNotNull(queryResult.getErrors());
-                            context.assertTrue(queryResult.getErrors().isEmpty());
-                            JsonObject data = queryResult.getData();
-                            context.assertNotNull(data.getJsonObject("droidHero"));
-                            context.assertEquals("Droid", data.getJsonObject("droidHero").getString("__typename"));
-                            context.assertEquals("R2-D2", data.getJsonObject("droidHero").getString("name"));
+                            testClass.executeQuery("the-discovery", "DroidQueries", DROIDS_QUERY, rh3 ->
+                            {
+                                context.assertNotNull(rh3.result());
+                                QueryResult queryResult = rh3.result();
+                                context.assertTrue(queryResult.isSucceeded());
+                                context.assertNotNull(queryResult.getData());
+                                context.assertNotNull(queryResult.getErrors());
+                                context.assertTrue(queryResult.getErrors().isEmpty());
+                                JsonObject data = queryResult.getData();
+                                context.assertNotNull(data.getJsonObject("droidHero"));
+                                context.assertEquals("Droid", data.getJsonObject("droidHero").getString("__typename"));
+                                context.assertEquals("R2-D2", data.getJsonObject("droidHero").getString("name"));
 
-                            SchemaConsumer.close(testClass);
-                            assertEquals(0, testClass.managedDiscoveries().size());
-                            async.complete();
-                        })
+                                SchemaConsumer.close(testClass);
+                                assertEquals(0, testClass.managedDiscoveries().size());
+                                async.complete();
+                            })
                 );
             });
         });

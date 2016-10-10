@@ -19,8 +19,6 @@ package io.engagingspaces.graphql.servicediscovery.consumer;
 import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.graphql.events.SchemaReferenceData;
 import io.engagingspaces.graphql.query.Queryable;
-import io.engagingspaces.graphql.servicediscovery.consumer.DiscoveryRegistrar;
-import io.engagingspaces.graphql.servicediscovery.consumer.DiscoveryRegistration;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;

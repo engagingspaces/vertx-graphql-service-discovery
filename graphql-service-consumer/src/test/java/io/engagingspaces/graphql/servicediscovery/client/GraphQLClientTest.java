@@ -30,12 +30,12 @@ import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.Status;
-import org.example.servicediscovery.server.droids.DroidsSchema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
 import static org.junit.Assert.*;
 
 /**
@@ -77,7 +77,8 @@ public class GraphQLClientTest {
             discovery = schema.getDiscovery();
             assertEquals(serviceDiscovery, discovery);
         };
-        GraphQLService.publish(vertx, serviceDiscovery, DroidsSchema.get(), context.asyncAssertSuccess(schemaHandler));
+        GraphQLService.publish(vertx, serviceDiscovery, droidsSchema, null, null,
+                context.asyncAssertSuccess(schemaHandler));
     }
 
     @After

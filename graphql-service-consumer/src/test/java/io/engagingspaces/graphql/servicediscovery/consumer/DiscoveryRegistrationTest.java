@@ -16,8 +16,7 @@
 
 package io.engagingspaces.graphql.servicediscovery.consumer;
 
-import io.engagingspaces.graphql.servicediscovery.consumer.DiscoveryRegistration;
-import io.engagingspaces.servicediscovery.graphql.discovery.impl.AbstractRegistration;
+import io.engagingspaces.graphql.discovery.impl.AbstractRegistration;
 import io.vertx.core.Vertx;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;

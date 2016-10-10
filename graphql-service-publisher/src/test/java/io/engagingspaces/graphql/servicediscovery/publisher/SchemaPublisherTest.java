@@ -16,11 +16,8 @@
 
 package io.engagingspaces.graphql.servicediscovery.publisher;
 
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaDefinition;
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar;
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration;
-import org.example.servicediscovery.server.droids.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import graphql.schema.GraphQLSchema;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -28,6 +25,7 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.Status;
+import org.example.graphql.testdata.droids.DroidsSchema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +56,7 @@ public class SchemaPublisherTest {
 
     @After
     public void tearDown(TestContext context) {
-        io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.close(schemaPublisher, context.asyncAssertSuccess(rh2 -> {
+        SchemaPublisher.close(schemaPublisher, context.asyncAssertSuccess(rh2 -> {
             vertx.close();
         }));
     }
@@ -69,12 +67,12 @@ public class SchemaPublisherTest {
         vertx.runOnContext( ctx ->
         {
             schemaPublisher = new TestClass(vertx);
-            io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.publish(schemaPublisher, options, DroidsSchema.get(), rh -> {
+            schemaPublisher.publish(options, DroidsSchema.droidsSchema, rh -> {
                 context.assertTrue(rh.succeeded());
                 context.assertNotNull(rh.result());
                 context.assertNotNull(schemaPublisher.getDiscovery("theDiscovery").get());
                 context.assertFalse(schemaPublisher.getDiscovery("theUnknownDiscovery").isPresent());
-                io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration registration = rh.result();
+                SchemaRegistration registration = rh.result();
                 context.assertTrue(registration.getPublisherId().isPresent());
                 context.assertEquals("thePublisherId", registration.getPublisherId().get());
                 context.assertNotNull(registration.getRecord());
@@ -84,7 +82,8 @@ public class SchemaPublisherTest {
                 context.assertEquals("DroidQueries", record.getName());
                 context.assertEquals(registration.getSchemaName(), record.getName());
                 context.assertNotNull(record.getRegistration());
-                context.assertEquals(Queryable.ADDRESS_PREFIX + ".DroidQueries", record.getLocation().getString(Record.ENDPOINT));
+                context.assertEquals(Queryable.ADDRESS_PREFIX + ".DroidQueries",
+                        record.getLocation().getString(Record.ENDPOINT));
                 context.assertEquals(Status.UP, record.getStatus());
 
                 ServiceDiscoveryOptions options = registration.getDiscoveryOptions();
@@ -111,32 +110,32 @@ public class SchemaPublisherTest {
     @Test
     public void should_Return_Failure_When_Schema_Definition_Not_Provided(TestContext context) {
         Async async = context.async(4);
-        io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.publish(schemaPublisher, new ServiceDiscoveryOptions(), null, rh -> {
+        schemaPublisher.publish(new ServiceDiscoveryOptions(), null, rh -> {
             assertFalse(rh.succeeded());
             async.countDown();
         });
-        io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.publish(schemaPublisher, new ServiceDiscoveryOptions(), null, null, rh -> {
+        schemaPublisher.publish(new ServiceDiscoveryOptions(), null, null, rh -> {
             assertFalse(rh.succeeded());
             async.countDown();
         });
-        io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.publishAll(schemaPublisher, new ServiceDiscoveryOptions(), rh -> {
+        schemaPublisher.publishAll(new ServiceDiscoveryOptions(), rh -> {
             assertFalse(rh.succeeded());
             async.countDown();
         });
-        SchemaDefinition[] definitions = null;
-        io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher.publishAll(schemaPublisher, new ServiceDiscoveryOptions(), rh -> {
+        GraphQLSchema[] schemas = null;
+        schemaPublisher.publishAll(new ServiceDiscoveryOptions(), rh -> {
             assertFalse(rh.succeeded());
             async.countDown();
-        }, definitions);
+        }, schemas);
         async.awaitSuccess();
     }
 
-    private class TestClass implements io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher {
+    private class TestClass implements SchemaPublisher {
 
-        private io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar registrar;
+        private SchemaRegistrar registrar;
 
         public TestClass(Vertx vertx) {
-            this.registrar = io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistrar.create(vertx, "thePublisherId");
+            this.registrar = SchemaRegistrar.create(vertx, "thePublisherId");
         }
 
         @Override
@@ -145,7 +144,7 @@ public class SchemaPublisherTest {
         }
 
         @Override
-        public void schemaPublished(io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration registration) {
+        public void schemaPublished(SchemaRegistration registration) {
             assertNotNull(registration);
         }
 

@@ -31,16 +31,16 @@ import static org.junit.Assert.assertNotNull;
  */
 public class PartialPublishExceptionTest {
 
-    io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException ex;
+    PartialPublishException ex;
 
     @Test
     @SuppressWarnings("ThrowableInstanceNeverThrown")
     public void should_Report_And_Return_Publication_Errors() {
         List<Throwable> errors = Arrays.asList(new RuntimeException("Error1"), new RuntimeException("Error2"));
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException("Publication error test", errors);
+        ex = new PartialPublishException("Publication error test", errors);
         assertEquals("Publication error test", ex.getMessage());
         assertEquals(2, ex.getPublicationErrors().size());
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException(errors);
+        ex = new PartialPublishException(errors);
         assertEquals("Failed to publish all schema definitions. 2 errors occurred:\n - Error1\n - Error2",
                 ex.getMessage());
     }
@@ -48,10 +48,10 @@ public class PartialPublishExceptionTest {
     @Test
     @SuppressWarnings("ThrowableInstanceNeverThrown")
     public void should_Have_Regular_Exception_Constructors() {
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException();
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException("msg");
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException(new RuntimeException());
-        ex = new io.engagingspaces.graphql.servicediscovery.publisher.PartialPublishException("msg", new RuntimeException());
+        ex = new PartialPublishException();
+        ex = new PartialPublishException("msg");
+        ex = new PartialPublishException(new RuntimeException());
+        ex = new PartialPublishException("msg", new RuntimeException());
         assertNotNull(ex.getPublicationErrors());
         assertEquals(0, ex.getPublicationErrors().size());
     }
