@@ -16,8 +16,11 @@
 
 package io.engagingspaces.graphql.servicediscovery.publisher;
 
+import graphql.schema.GraphQLSchema;
 import io.engagingspaces.graphql.events.SchemaPublishedHandler;
 import io.engagingspaces.graphql.events.SchemaUnpublishedHandler;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
+import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.engagingspaces.graphql.servicediscovery.service.GraphQLService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.CompositeFuture;
@@ -44,73 +47,26 @@ public interface SchemaPublisher extends
         SchemaPublishedHandler<SchemaRegistration>, SchemaUnpublishedHandler<SchemaRegistration> {
 
     /**
-     * Publishes the provided schema definition to the specified service discovery.
-     * <p>
-     * Upon success a {@link SchemaRegistration}s is returned in the result handler.
-     *
-     * @param publisher     the schema publisher to publishAll
-     * @param options       the service discovery options
-     * @param definition    the list of schema definitions to publish
-     * @param resultHandler the result handler
-     */
-    static void publish(SchemaPublisher publisher, ServiceDiscoveryOptions options,
-                        SchemaDefinition definition, Handler<AsyncResult<SchemaRegistration>> resultHandler) {
-        publisher.publish(options, definition, resultHandler);
-    }
-
-    /**
-     * Publishes the schema definition with the provided metadata to the specified service discovery.
-     * <p>
-     * Upon success a {@link SchemaRegistration}s is returned in the result handler.
-     *
-     * @param publisher     the schema publisher to publishAll
-     * @param options       the service discovery options
-     * @param metadata      the metadata to pass to the published schema
-     * @param definition    the list of schema definitions to publish
-     * @param resultHandler the result handler
-     */
-    static void publish(SchemaPublisher publisher, ServiceDiscoveryOptions options, JsonObject metadata,
-                        SchemaDefinition definition, Handler<AsyncResult<SchemaRegistration>> resultHandler) {
-        publisher.publish(options, definition, metadata, resultHandler);
-    }
-
-    /**
-     * Publishes the provided schema definitions to the specified service discovery.
-     * <p>
-     * Upon success a list of {@link SchemaRegistration}s is returned in the result handler.
-     *
-     * @param publisher     the schema publisher to publishAll
-     * @param options       the service discovery options
-     * @param resultHandler the result handler
-     * @param definitions   the list of schema definitions to publish
-     */
-    static void publishAll(SchemaPublisher publisher, ServiceDiscoveryOptions options,
-                           Handler<AsyncResult<List<SchemaRegistration>>> resultHandler,
-                           SchemaDefinition... definitions) {
-        publisher.publishAll(options, resultHandler, definitions);
-    }
-
-    /**
      * Publishes the provided schema definitions to the specified service discovery.
      * <p>
      * Upon success a list of {@link SchemaRegistration}s is returned in the result handler.
      *
      * @param options       the service discovery options
      * @param resultHandler the result handler
-     * @param definitions   the list of schema definitions to publish
+     * @param schemas       the GraphQL schema's to publish
      */
     default void publishAll(ServiceDiscoveryOptions options,
                             Handler<AsyncResult<List<SchemaRegistration>>> resultHandler,
-                            SchemaDefinition... definitions) {
+                            GraphQLSchema... schemas) {
 
         Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
-        if (definitions == null || definitions.length == 0) {
+        if (schemas == null || schemas.length == 0) {
             resultHandler.handle(Future.failedFuture("Nothing to publish. No schema definitions provided"));
             return;
         }
         List<Future> futures = new ArrayList<>();
-        Arrays.asList(definitions).forEach(definition ->
-                publish(options, definition, rh -> futures.add(
+        Arrays.asList(schemas).forEach(schema ->
+                publish(options, schema, rh -> futures.add(
                         rh.succeeded() ? Future.succeededFuture(rh.result()) : Future.failedFuture(rh.cause()))));
 
         CompositeFuture.all(futures).setHandler(rh -> {
@@ -120,8 +76,7 @@ public interface SchemaPublisher extends
             }
             CompositeFuture composite = rh.result();
             List<SchemaRegistration> published = composite.list();
-            resultHandler.handle(Future.succeededFuture(published));
-            if (published.size() != definitions.length) {
+            if (published.size() != schemas.length) {
                 List<Throwable> errors = rh.result().<Future<Void>>list().stream()
                         .filter(Future::failed)
                         .map(Future::cause)
@@ -134,46 +89,46 @@ public interface SchemaPublisher extends
     }
 
     /**
-     * Publishes the schema definition to the service discovery indicated by the provided service discovery options.
+     * Publishes the schema definition to the service discovery indicated by the provided schema publisher options.
      *
      * @param options       the service discovery options
-     * @param definition    the schema definition to publish
+     * @param schema        the GraphQL schema to publish
      * @param resultHandler the result handler
      */
-    default void publish(ServiceDiscoveryOptions options, SchemaDefinition definition,
+    default void publish(ServiceDiscoveryOptions options, GraphQLSchema schema,
                          Handler<AsyncResult<SchemaRegistration>> resultHandler) {
-        publish(options, definition, new JsonObject(), resultHandler);
+        publish(options, schema, SchemaMetadata.create(), resultHandler);
     }
 
     /**
      * Publishes the schema definition and metadata to the service discovery indicated by
-     * the provided service discovery options.
+     * the provided schema publisher options.
      *
      * @param options       the service discovery options
-     * @param definition    the schema definition to publish
+     * @param schema        the GraphQL schema to publish
      * @param metadata      the metadata to pass to the published discovery record
      * @param resultHandler the result handler
      */
-    default void publish(ServiceDiscoveryOptions options, SchemaDefinition definition, JsonObject metadata,
+    default void publish(ServiceDiscoveryOptions options, GraphQLSchema schema, SchemaMetadata metadata,
                          Handler<AsyncResult<SchemaRegistration>> resultHandler) {
-        if (definition == null) {
+        if (schema == null) {
             resultHandler.handle(Future.failedFuture("Nothing to publish. No schema definition provided"));
             return;
         }
-        Objects.requireNonNull(definition.schema(), "Schema definition graphql schema cannot be null");
+        Objects.requireNonNull(schema, "GraphQL schema cannot be null");
         Objects.requireNonNull(options, "Schema discovery options cannot be null");
         Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
 
-        String schemaName = definition.schema().getQueryType().getName();
-        if (schemaRegistrar().findRegistration(options.getName(), schemaName).isPresent()) {
+        SchemaDefinition definition = SchemaDefinition.createInstance(schema, metadata);
+        if (schemaRegistrar().findRegistration(options.getName(), definition.schemaName()).isPresent()) {
             resultHandler.handle(Future.failedFuture("Schema '" +
-                    schemaName + "' was already published to: " + options.getName()));
+                    definition.schemaName() + "' was already published to: " + options.getName()));
             return;
         }
         metadata.put("publisherId", schemaRegistrar().getPublisherId());
         ServiceDiscovery discovery = schemaRegistrar().getOrCreateDiscovery(options);
 
-        GraphQLService.publish(schemaRegistrar().getVertx(), discovery, definition, metadata, rh -> {
+        GraphQLService.publish(schemaRegistrar().getVertx(), discovery, definition, rh -> {
             if (rh.succeeded()) {
                 SchemaRegistration registration = schemaRegistrar().register(rh.result(), options, this, this);
                 resultHandler.handle(Future.succeededFuture(registration));

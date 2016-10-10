@@ -21,6 +21,7 @@ import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.graphql.events.SchemaPublishedHandler;
 import io.engagingspaces.graphql.events.SchemaUnpublishedHandler;
 import io.engagingspaces.graphql.events.impl.SchemaMessageConsumers;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.engagingspaces.graphql.servicediscovery.service.GraphQLService;
 import io.vertx.core.*;
 import io.vertx.core.eventbus.MessageConsumer;

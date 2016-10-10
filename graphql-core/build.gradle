@@ -9,7 +9,7 @@ dependencies {
     compile "com.graphql-java:graphql-java:$graphqlVersion"
 
     testCompile project(path: ':graphql-service-publisher')
-    testCompile "io.engagingspaces:vertx-test-graphql-droids-microservice:$vertxGraphqlVersion"
+    testCompile project(path: ':graphql-testdata')
 
     testCompile "junit:junit:$junitVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"

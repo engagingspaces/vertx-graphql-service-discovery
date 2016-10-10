@@ -6,9 +6,7 @@ dependencies {
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-service-discovery:$vertxVersion"
 
-    testCompile "io.engagingspaces:vertx-test-graphql-droids-microservice:$vertxGraphqlVersion"
-    testCompile "io.engagingspaces:vertx-test-graphql-starwars-microservice:$vertxGraphqlVersion"
-
+    testCompile project(path: ':graphql-testdata')
     testCompile "junit:junit:$junitVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"
 }

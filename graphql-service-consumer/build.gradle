@@ -8,5 +8,5 @@ dependencies {
     testCompile "io.vertx:vertx-unit:$vertxVersion"
 
     testCompile project(path: ':graphql-service-publisher')
-    testCompile "io.engagingspaces:vertx-test-graphql-droids-microservice:$vertxGraphqlVersion"
+    testCompile project(path: ':graphql-testdata')
 }

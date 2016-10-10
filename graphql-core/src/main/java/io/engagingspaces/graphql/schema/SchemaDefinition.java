@@ -14,11 +14,12 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.engagingspaces.graphql.servicediscovery.publisher;
+package io.engagingspaces.graphql.schema;
 
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLError;
+import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLSchema;
 import io.engagingspaces.graphql.query.QueryResult;
 import io.engagingspaces.graphql.query.QueryResult.ErrorLocation;
@@ -29,6 +30,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +39,33 @@ import java.util.stream.Collectors;
  *
  * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
-public interface SchemaDefinition extends Queryable {
+public class SchemaDefinition implements Queryable {
+
+    private final GraphQLSchema schema;
+    private final String schemaName;
+    private final SchemaMetadata schemaMetadata;
+    private final String serviceAddress;
+
+    protected SchemaDefinition(GraphQLSchema schema, SchemaMetadata metadata) {
+        this.schema = schema;
+        this.schemaMetadata = metadata == null ? SchemaMetadata.create() : metadata;
+        this.schemaName = schemaMetadata.getSchemaName() == null || schemaMetadata.getSchemaName().isEmpty() ?
+                schema.getQueryType().getName() : schemaMetadata.getSchemaName();
+        this.serviceAddress = schemaMetadata.getServiceAddress() == null ||
+                schemaMetadata.getServiceAddress().isEmpty() ?
+                        Queryable.ADDRESS_PREFIX + "." + schemaName() : schemaMetadata.getServiceAddress();
+
+        schemaMetadata.put(SchemaMetadata.METADATA_QUERIES, schema.getQueryType().getFieldDefinitions().stream()
+                .map(GraphQLFieldDefinition::getName).collect(Collectors.toList()));
+        schemaMetadata.put(SchemaMetadata.METADATA_MUTATIONS,
+                !schema.isSupportingMutations() ? Collections.emptyList() :
+                        schema.getMutationType().getFieldDefinitions().stream()
+                                .map(GraphQLFieldDefinition::getName).collect(Collectors.toList()));
+    }
+
+    public static SchemaDefinition createInstance(GraphQLSchema schema, SchemaMetadata metadata) {
+        return new SchemaDefinition(schema, metadata);
+    }
 
     /**
      * Executes the GraphQL query on the GraphQL schema proxy.
@@ -51,7 +79,7 @@ public interface SchemaDefinition extends Queryable {
      * @param resultHandler the result handler with the query result on success, or a failure
      */
     @Override
-    default void query(String graphqlQuery, Handler<AsyncResult<QueryResult>> resultHandler) {
+    public void query(String graphqlQuery, Handler<AsyncResult<QueryResult>> resultHandler) {
         queryWithVariables(graphqlQuery, null, resultHandler);
     }
 
@@ -62,7 +90,7 @@ public interface SchemaDefinition extends Queryable {
      * @param resultHandler the result handler with the graphql query result on success, or a failure
      */
     @Override
-    default void queryWithVariables(String graphqlQuery, JsonObject variables,
+    public void queryWithVariables(String graphqlQuery, JsonObject variables,
                                     Handler<AsyncResult<QueryResult>> resultHandler) {
         try {
             QueryResult result = queryBlocking(graphqlQuery, variables);
@@ -81,9 +109,34 @@ public interface SchemaDefinition extends Queryable {
      * @return the graphql schema to be published and queried
      * @throws UnsupportedOperationException if invoked from a service proxy
      */
-    default GraphQLSchema schema() {
-        // Override this method in a sub-class
-        throw new UnsupportedOperationException("GraphQL schema is not available in service proxies");
+    public GraphQLSchema schema() {
+        return schema;
+    }
+
+    /**
+     * Gets the name of the schema definition.
+     *
+     * @return the schema name
+     */
+    public String schemaName() {
+        return schemaName;
+    }
+
+    /**
+     * Gets the address where the schema will be published.
+     *
+     */
+    public String serviceAddress() {
+        return serviceAddress;
+    }
+
+    /**
+     * Gets the metadata associated with the schema.
+     *
+     * @return the schema metadata
+     */
+    public SchemaMetadata metadata() {
+        return schemaMetadata;
     }
 
     /**
@@ -93,7 +146,7 @@ public interface SchemaDefinition extends Queryable {
      * @param variables    the variables to pass to the query
      * @return the graphql query result
      */
-    default QueryResult queryBlocking(String graphqlQuery, JsonObject variables) {
+    public QueryResult queryBlocking(String graphqlQuery, JsonObject variables) {
         Objects.requireNonNull(graphqlQuery, "GraphQL query cannot be null");
         GraphQL graphQL = new GraphQL(schema());
         ExecutionResult result;
@@ -113,7 +166,7 @@ public interface SchemaDefinition extends Queryable {
      * @return the query result data object
      */
     @SuppressWarnings("unchecked")
-    static QueryResult convertToQueryResult(ExecutionResult executionResult) {
+    public static QueryResult convertToQueryResult(ExecutionResult executionResult) {
         Objects.requireNonNull(executionResult, "Query execution result cannot be null");
         boolean succeeded = executionResult.getErrors() == null || executionResult.getErrors().isEmpty();
 

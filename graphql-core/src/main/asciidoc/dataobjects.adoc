@@ -81,6 +81,20 @@ Gets the errors that occurred on query execution, if the GraphQL query was not s
 +++
 |===
 
+[[SchemaMetadata]]
+== SchemaMetadata
+
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[async]]`async`|`Boolean`|-
+|[[deliveryOptions]]`deliveryOptions`|`link:dataobjects.html#DeliveryOptions[DeliveryOptions]`|-
+|[[schemaName]]`schemaName`|`String`|-
+|[[serviceAddress]]`serviceAddress`|`String`|-
+|===
+
 [[SchemaReferenceData]]
 == SchemaReferenceData
 

@@ -17,7 +17,6 @@
 package org.example.graphql.testdata.starwars;
 
 import graphql.schema.*;
-import io.engagingspaces.graphql.schema.SchemaDefinition;
 
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLArgument.newArgument;

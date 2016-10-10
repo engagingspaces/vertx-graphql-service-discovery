@@ -19,14 +19,16 @@ package io.engagingspaces.graphql.servicediscovery.service;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLSchema;
 import io.engagingspaces.graphql.query.Queryable;
+import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher;
 import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration;
-import io.engagingspaces.graphql.servicediscovery.publisher.SchemaDefinition;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.vertx.core.*;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
+import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.spi.ServiceType;
 import io.vertx.serviceproxy.ProxyHelper;
 
@@ -51,17 +53,22 @@ public interface GraphQLService extends ServiceType {
      * {@link Queryable} service proxy that supplies the published {@link SchemaDefinition}, the published service
      * discovery record, and the {@link ServiceDiscovery} it was published to.
      * <p>
-     * You need to keep the returned {@link Record} as long as the schema is published.
+     * Note that unless invoked from a {@link SchemaPublisher} a
+     * client needs to keep hold of the returned {@link Record} as long as it is published.
      *
      * @param vertx         the vert.x instance
      * @param discovery     the service discovery instance
-     * @param definition    the service proxy instance exposing the graphql schema
-     * @param resultHandler the result handler that returns the
-     * {@link SchemaRegistration}
+     * @param schema        the graphql schema
+     * @param options       the schema discovery options
+     * @param metadata      the metadata to pass to the service
+     * @param resultHandler the result handler that returns the registration
      */
-    static void publish(Vertx vertx, ServiceDiscovery discovery, SchemaDefinition definition,
-                        Handler<AsyncResult<SchemaRegistration>> resultHandler) {
-        publish(vertx, discovery, definition, new JsonObject(), resultHandler);
+    static void publish(Vertx vertx, ServiceDiscovery discovery, GraphQLSchema schema, ServiceDiscoveryOptions options,
+                        SchemaMetadata metadata, Handler<AsyncResult<SchemaRegistration>> resultHandler) {
+
+        Objects.requireNonNull(schema, "GraphQL schema cannot be null");
+        SchemaDefinition definition = SchemaDefinition.createInstance(schema, metadata);
+        publish(vertx, discovery, definition, resultHandler);
     }
 
     /**
@@ -77,45 +84,32 @@ public interface GraphQLService extends ServiceType {
      * @param vertx         the vert.x instance
      * @param discovery     the service discovery instance
      * @param definition    the service proxy instance exposing the graphql schema
-     * @param metadata      the metadata to pass to the service
      * @param resultHandler the result handler that returns the registration
      */
     static void publish(Vertx vertx, ServiceDiscovery discovery, SchemaDefinition definition,
-                        JsonObject metadata, Handler<AsyncResult<SchemaRegistration>> resultHandler) {
+                        Handler<AsyncResult<SchemaRegistration>> resultHandler) {
 
         Objects.requireNonNull(vertx, "Vertx cannot be null");
         Objects.requireNonNull(discovery, "Service discovery cannot be null");
         Objects.requireNonNull(definition, "GraphQL queryable cannot be null");
-        Objects.requireNonNull(definition.schema(), "GraphQL schema cannot be null");
         Objects.requireNonNull(resultHandler, "Publication result handler cannot be null");
-
-        GraphQLSchema schema = definition.schema();
-        String rootQueryName = schema.getQueryType().getName();
-        String address = SchemaDefinition.ADDRESS_PREFIX + "" + rootQueryName;
-        JsonObject meta = metadata == null ? new JsonObject() : metadata.copy();
 
         // TODO Caching proxy ok?
 
         final MessageConsumer<JsonObject> serviceConsumer;
-        if (meta.getString("publisherId") == null) {
-            serviceConsumer = ProxyHelper.registerService(Queryable.class, vertx, definition, address);
+        if (definition.metadata().get("publisherId") == null) {
+            serviceConsumer = ProxyHelper.registerService(
+                    Queryable.class, vertx, definition, definition.serviceAddress());
         } else {
             // Publisher handles service instantiation, manages consumer.
             serviceConsumer = null;
         }
 
-        // For later use
-        meta.put(SchemaRegistration.METADATA_QUERIES, schema.getQueryType().getFieldDefinitions().stream()
-                .map(GraphQLFieldDefinition::getName).collect(Collectors.toList()));
-        meta.put(SchemaRegistration.METADATA_MUTATIONS, !schema.isSupportingMutations() ? Collections.emptyList() :
-                schema.getMutationType().getFieldDefinitions().stream()
-                        .map(GraphQLFieldDefinition::getName).collect(Collectors.toList()));
-
         Record record = new Record()
                 .setType(SERVICE_TYPE)
-                .setName(rootQueryName)
-                .setMetadata(meta)
-                .setLocation(new JsonObject().put(Record.ENDPOINT, address));
+                .setName(definition.schemaName())
+                .setMetadata(definition.metadata().toJson())
+                .setLocation(new JsonObject().put(Record.ENDPOINT, definition.serviceAddress()));
 
         discovery.publish(record, rh -> {
             if (rh.succeeded()) {
