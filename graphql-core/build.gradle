@@ -6,9 +6,9 @@ dependencies {
     compile "io.vertx:vertx-codegen:$vertxVersion"
     compile "io.vertx:vertx-service-proxy:$vertxVersion"
     compile "io.vertx:vertx-service-discovery:$vertxVersion"
+    compile "com.graphql-java:graphql-java:$graphqlVersion"
 
     testCompile project(path: ':graphql-service-publisher')
-//    testCompile project(path: ':graphql-service-publisher', configuration: 'testOutput')
     testCompile "io.engagingspaces:vertx-test-graphql-droids-microservice:$vertxGraphqlVersion"
 
     testCompile "junit:junit:$junitVersion"
