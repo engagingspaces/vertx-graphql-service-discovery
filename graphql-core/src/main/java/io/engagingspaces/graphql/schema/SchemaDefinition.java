@@ -183,7 +183,7 @@ public class SchemaDefinition implements Queryable {
      * @param graphQLError the graphql error to convert
      * @return the converted query error data object
      */
-    static QueryError convertToQueryError(GraphQLError graphQLError) {
+    public static QueryError convertToQueryError(GraphQLError graphQLError) {
         return new QueryError(graphQLError.getErrorType().name(), graphQLError.getMessage(),
                 graphQLError.getLocations().stream().map(location ->
                         new ErrorLocation(location.getLine(), location.getColumn())).collect(Collectors.toList()));
