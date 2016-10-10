@@ -16,7 +16,7 @@
 
 package io.engagingspaces.graphql.discovery.impl;
 
-import io.engagingspaces.servicediscovery.graphql.discovery.Registration;
+import io.engagingspaces.graphql.discovery.Registration;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 

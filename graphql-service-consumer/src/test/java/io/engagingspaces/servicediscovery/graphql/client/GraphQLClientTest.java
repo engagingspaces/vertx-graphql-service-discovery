@@ -16,10 +16,9 @@
 
 package io.engagingspaces.servicediscovery.graphql.client;
 
-import org.example.servicediscovery.server.droids.DroidsSchema;
+import io.engagingspaces.graphql.query.QueryResult;
+import io.engagingspaces.graphql.query.Queryable;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaRegistration;
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.engagingspaces.servicediscovery.graphql.service.GraphQLService;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -31,6 +30,7 @@ import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.Status;
+import org.example.servicediscovery.server.droids.DroidsSchema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

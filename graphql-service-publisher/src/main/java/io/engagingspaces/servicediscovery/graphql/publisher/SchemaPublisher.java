@@ -16,8 +16,8 @@
 
 package io.engagingspaces.servicediscovery.graphql.publisher;
 
-import io.engagingspaces.servicediscovery.graphql.events.SchemaPublishedHandler;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaUnpublishedHandler;
+import io.engagingspaces.graphql.events.SchemaPublishedHandler;
+import io.engagingspaces.graphql.events.SchemaUnpublishedHandler;
 import io.engagingspaces.servicediscovery.graphql.service.GraphQLService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.CompositeFuture;

@@ -16,11 +16,11 @@
 
 package io.engagingspaces.servicediscovery.graphql.publisher;
 
-import io.engagingspaces.servicediscovery.graphql.discovery.impl.AbstractRegistrar;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaAnnounceHandler;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaPublishedHandler;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaUnpublishedHandler;
-import io.engagingspaces.servicediscovery.graphql.events.impl.SchemaMessageConsumers;
+import io.engagingspaces.graphql.discovery.impl.AbstractRegistrar;
+import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
+import io.engagingspaces.graphql.events.SchemaPublishedHandler;
+import io.engagingspaces.graphql.events.SchemaUnpublishedHandler;
+import io.engagingspaces.graphql.events.impl.SchemaMessageConsumers;
 import io.vertx.core.*;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;

@@ -16,10 +16,10 @@
 
 package io.engagingspaces.graphql.events.impl;
 
-import io.engagingspaces.servicediscovery.graphql.events.SchemaAnnounceHandler;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaReferenceData;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaUsageHandler;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
+import io.engagingspaces.graphql.events.SchemaReferenceData;
+import io.engagingspaces.graphql.events.SchemaUsageHandler;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;

@@ -16,8 +16,8 @@
 
 package io.engagingspaces.servicediscovery.graphql.client;
 
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.QueryResult;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -30,7 +30,7 @@ import io.vertx.servicediscovery.Status;
 
 import java.util.Objects;
 
-import static io.engagingspaces.servicediscovery.graphql.query.Queryable.SERVICE_TYPE;
+import static io.engagingspaces.graphql.query.Queryable.SERVICE_TYPE;
 
 /**
  * Client for consuming GraphQL services.

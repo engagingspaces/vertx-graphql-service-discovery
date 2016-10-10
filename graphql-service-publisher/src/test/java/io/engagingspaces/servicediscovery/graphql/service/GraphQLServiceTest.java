@@ -18,8 +18,8 @@ package io.engagingspaces.servicediscovery.graphql.service;
 
 import org.example.servicediscovery.server.droids.DroidsSchema;
 import org.example.servicediscovery.server.starwars.StarWarsSchema;
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.QueryResult;
+import io.engagingspaces.graphql.query.Queryable;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaRegistration;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;

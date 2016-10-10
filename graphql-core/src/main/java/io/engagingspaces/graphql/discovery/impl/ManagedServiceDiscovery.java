@@ -16,7 +16,6 @@
 
 package io.engagingspaces.graphql.discovery.impl;
 
-import io.engagingspaces.servicediscovery.graphql.discovery.Registrar;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.impl.Action;
@@ -36,7 +35,7 @@ import java.util.function.Function;
 
 /**
  * Wrapper for {@link ServiceDiscovery} that delegates calls to
- * {@link ServiceDiscovery#close()} to a {@link Registrar} and
+ * {@link ServiceDiscovery#close()} to a {@link io.engagingspaces.graphql.discovery.Registrar} and
  * forwards all other method calls to the wrapped service discovery instance.
  *
  * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
@@ -123,7 +122,7 @@ class ManagedServiceDiscovery implements ServiceDiscovery {
      * {@inheritDoc}
      * <p>
      * Note: This service discovery is being managed by a
-     * {@link Registrar}. Upon closing any related resources will
+     * {@link io.engagingspaces.graphql.discovery.Registrar}. Upon closing any related resources will
      * be released by the registrar.
      */
     @Override

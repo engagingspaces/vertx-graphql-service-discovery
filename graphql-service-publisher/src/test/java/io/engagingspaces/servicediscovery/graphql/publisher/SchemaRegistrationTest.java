@@ -2,7 +2,7 @@ package io.engagingspaces.servicediscovery.graphql.publisher;
 
 import org.example.servicediscovery.server.droids.DroidsSchema;
 import org.example.servicediscovery.server.starwars.StarWarsSchema;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;

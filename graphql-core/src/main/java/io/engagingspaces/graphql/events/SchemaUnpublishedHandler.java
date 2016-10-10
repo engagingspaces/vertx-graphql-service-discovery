@@ -16,7 +16,7 @@
 
 package io.engagingspaces.graphql.events;
 
-import io.engagingspaces.servicediscovery.graphql.discovery.Registration;
+import io.engagingspaces.graphql.discovery.Registration;
 
 /**
  * Event handler that is invoked on publishers, when one of its published schema's is unpublished.

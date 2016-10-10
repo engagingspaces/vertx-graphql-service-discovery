@@ -17,8 +17,8 @@
 package io.engagingspaces.servicediscovery.graphql.consumer;
 
 import org.example.servicediscovery.server.droids.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaReferenceData;
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
+import io.engagingspaces.graphql.events.SchemaReferenceData;
+import io.engagingspaces.graphql.query.QueryResult;
 import io.engagingspaces.servicediscovery.graphql.service.GraphQLService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;

@@ -17,8 +17,8 @@
 package io.engagingspaces.graphql.events.impl;
 
 import org.example.servicediscovery.server.droids.DroidsSchema;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaAnnounceHandler;
-import io.engagingspaces.servicediscovery.graphql.events.SchemaUsageHandler;
+import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
+import io.engagingspaces.graphql.events.SchemaUsageHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.junit.After;

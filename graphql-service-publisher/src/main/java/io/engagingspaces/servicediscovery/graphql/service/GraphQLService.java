@@ -18,7 +18,7 @@ package io.engagingspaces.servicediscovery.graphql.service;
 
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLSchema;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.Queryable;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaPublisher;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaRegistration;
 import io.engagingspaces.servicediscovery.graphql.publisher.SchemaDefinition;
@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static io.engagingspaces.servicediscovery.graphql.query.Queryable.SERVICE_TYPE;
+import static io.engagingspaces.graphql.query.Queryable.SERVICE_TYPE;
 
 /**
  * {@link ServiceType} for GraphQL services.

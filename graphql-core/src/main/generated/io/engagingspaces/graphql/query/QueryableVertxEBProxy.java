@@ -14,9 +14,9 @@
 * under the License.
 */
 
-package io.engagingspaces.servicediscovery.graphql.query;
+package io.engagingspaces.graphql.query;
 
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.Future;
@@ -32,12 +32,12 @@ import java.util.function.Function;
 import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.serviceproxy.ServiceException;
 import io.vertx.serviceproxy.ServiceExceptionMessageCodec;
-import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.vertx.core.Vertx;
+import io.engagingspaces.graphql.query.Queryable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.engagingspaces.servicediscovery.graphql.query.QueryResult;
+import io.engagingspaces.graphql.query.QueryResult;
 
 /*
   Generated Proxy code - DO NOT EDIT
