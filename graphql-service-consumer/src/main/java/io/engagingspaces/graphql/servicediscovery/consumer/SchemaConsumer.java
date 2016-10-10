@@ -16,11 +16,11 @@
 
 package io.engagingspaces.graphql.servicediscovery.consumer;
 
-import io.engagingspaces.graphql.servicediscovery.client.GraphQLClient;
 import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.graphql.events.SchemaReferenceData;
 import io.engagingspaces.graphql.events.SchemaUsageHandler;
 import io.engagingspaces.graphql.query.QueryResult;
+import io.engagingspaces.graphql.servicediscovery.client.GraphQLClient;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;

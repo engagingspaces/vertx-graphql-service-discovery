@@ -1,7 +1,7 @@
 package io.engagingspaces.graphql.servicediscovery.publisher;
 
-import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.engagingspaces.graphql.query.Queryable;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;

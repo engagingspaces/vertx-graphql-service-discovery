@@ -16,8 +16,8 @@
 
 package io.engagingspaces.graphql.servicediscovery.service.impl;
 
-import io.engagingspaces.graphql.servicediscovery.service.GraphQLService;
 import io.engagingspaces.graphql.query.Queryable;
+import io.engagingspaces.graphql.servicediscovery.service.GraphQLService;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;

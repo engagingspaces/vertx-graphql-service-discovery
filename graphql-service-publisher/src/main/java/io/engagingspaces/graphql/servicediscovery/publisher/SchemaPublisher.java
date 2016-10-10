@@ -26,7 +26,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 

@@ -16,14 +16,16 @@
 
 package io.engagingspaces.graphql.servicediscovery.service;
 
-import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLSchema;
 import io.engagingspaces.graphql.query.Queryable;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
 import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.engagingspaces.graphql.servicediscovery.publisher.SchemaPublisher;
 import io.engagingspaces.graphql.servicediscovery.publisher.SchemaRegistration;
-import io.engagingspaces.graphql.schema.SchemaDefinition;
-import io.vertx.core.*;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;
@@ -32,9 +34,7 @@ import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.spi.ServiceType;
 import io.vertx.serviceproxy.ProxyHelper;
 
-import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static io.engagingspaces.graphql.query.Queryable.SERVICE_TYPE;
 

@@ -16,11 +16,10 @@
 
 package io.engagingspaces.graphql.events.impl;
 
-import io.engagingspaces.graphql.schema.SchemaDefinition;
-import io.engagingspaces.graphql.schema.SchemaMetadata;
-import io.vertx.core.json.JsonObject;
 import io.engagingspaces.graphql.events.SchemaAnnounceHandler;
 import io.engagingspaces.graphql.events.SchemaUsageHandler;
+import io.engagingspaces.graphql.schema.SchemaDefinition;
+import io.engagingspaces.graphql.schema.SchemaMetadata;
 import io.vertx.core.Vertx;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.junit.After;
