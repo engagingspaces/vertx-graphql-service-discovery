@@ -21,7 +21,7 @@ import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
-import io.engagingspaces.servicediscovery.graphql.publisher.SchemaDefinition;
+import io.engagingspaces.graphql.servicediscovery.publisher.SchemaDefinition;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.example.servicediscovery.server.utils.MapBuilder;

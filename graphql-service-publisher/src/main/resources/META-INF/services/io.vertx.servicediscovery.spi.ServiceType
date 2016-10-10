@@ -1,2 +1,2 @@
 
-io.engagingspaces.servicediscovery.graphql.service.impl.GraphQLServiceImpl
+io.engagingspaces.graphql.servicediscovery.service.impl.GraphQLServiceImpl
