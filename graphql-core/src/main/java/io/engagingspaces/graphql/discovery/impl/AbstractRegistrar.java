@@ -14,10 +14,10 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.engagingspaces.servicediscovery.graphql.discovery.impl;
+package io.engagingspaces.graphql.discovery.impl;
 
-import io.engagingspaces.servicediscovery.graphql.discovery.Registrar;
-import io.engagingspaces.servicediscovery.graphql.discovery.Registration;
+import io.engagingspaces.graphql.discovery.Registrar;
+import io.engagingspaces.graphql.discovery.Registration;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.Action;
 import io.vertx.core.impl.VertxInternal;

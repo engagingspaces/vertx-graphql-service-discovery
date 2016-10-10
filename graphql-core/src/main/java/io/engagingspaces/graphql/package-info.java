@@ -18,6 +18,6 @@
  * @author <a href="https://github.com/aschrijver/">Arnold Schrijver</a>
  */
 @ModuleGen(name="vertx-graphql-service-core", groupPackage = "io.engagingspaces")
-package io.engagingspaces.servicediscovery.graphql;
+package io.engagingspaces.graphql;
 
 import io.vertx.codegen.annotations.ModuleGen;

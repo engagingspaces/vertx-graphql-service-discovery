@@ -37,7 +37,6 @@ subprojects {
     version = '0.9.3'
 
     sourceCompatibility = 1.8
-//    archivesBaseName = "vertx-$name"
 }
 
 task wrapper(type: Wrapper) {

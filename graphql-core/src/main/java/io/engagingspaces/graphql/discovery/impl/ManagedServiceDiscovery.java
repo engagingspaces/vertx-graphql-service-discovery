@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.engagingspaces.servicediscovery.graphql.discovery.impl;
+package io.engagingspaces.graphql.discovery.impl;
 
 import io.engagingspaces.servicediscovery.graphql.discovery.Registrar;
 import io.vertx.core.AsyncResult;
