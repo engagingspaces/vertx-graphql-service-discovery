@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.engagingspaces.servicediscovery.graphql.events.impl;
+package io.engagingspaces.graphql.events.impl;
 
 import org.example.servicediscovery.server.droids.DroidsSchema;
 import io.engagingspaces.servicediscovery.graphql.events.SchemaAnnounceHandler;

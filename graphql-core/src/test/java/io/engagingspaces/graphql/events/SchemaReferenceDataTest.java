@@ -14,7 +14,7 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.engagingspaces.servicediscovery.graphql.events;
+package io.engagingspaces.graphql.events;
 
 import io.engagingspaces.servicediscovery.graphql.query.Queryable;
 import io.vertx.core.json.JsonObject;
