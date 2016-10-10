@@ -24,6 +24,7 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
+import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.ServiceReference;
 import io.vertx.servicediscovery.spi.ServiceExporter;
 import io.vertx.servicediscovery.spi.ServiceImporter;
@@ -110,12 +111,24 @@ class ManagedServiceDiscovery implements ServiceDiscovery {
         return unmanagedDiscoveryInstance.registerServiceImporter(importer, configuration);
     }
 
+    @Override
+    public ServiceDiscovery registerServiceImporter(ServiceImporter importer, JsonObject configuration,
+                                                    Handler<AsyncResult<Void>> completionHandler) {
+        return unmanagedDiscoveryInstance.registerServiceImporter(importer, configuration, completionHandler);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public ServiceDiscovery registerServiceExporter(ServiceExporter exporter, JsonObject configuration) {
         return unmanagedDiscoveryInstance.registerServiceExporter(exporter, configuration);
+    }
+
+    @Override
+    public ServiceDiscovery registerServiceExporter(ServiceExporter exporter, JsonObject configuration,
+                                                    Handler<AsyncResult<Void>> completionHandler) {
+        return unmanagedDiscoveryInstance.registerServiceExporter(exporter, configuration, completionHandler);
     }
 
     /**
@@ -215,5 +228,10 @@ class ManagedServiceDiscovery implements ServiceDiscovery {
     @Override
     public Set<ServiceReference> bindings() {
         return unmanagedDiscoveryInstance.bindings();
+    }
+
+    @Override
+    public ServiceDiscoveryOptions options() {
+        return unmanagedDiscoveryInstance.options();
     }
 }

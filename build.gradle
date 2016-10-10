@@ -18,11 +18,10 @@ publishing {
 }
 
 ext {
-    vertxVersion = '3.3.0'
-    graphqlVersion = '2.0.0'
+    vertxVersion = '3.3.3'
+    graphqlVersion = '2.1.0'
 
     junitVersion = '4.12'
-    vertxGraphqlVersion = '0.9.3'
 }
 
 subprojects {
@@ -34,7 +33,7 @@ subprojects {
     }
 
     group = 'io.engagingspaces'
-    version = '0.9.3'
+    version = '0.10.0'
 
     sourceCompatibility = 1.8
 }

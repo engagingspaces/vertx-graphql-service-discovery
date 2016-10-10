@@ -43,6 +43,7 @@ import io.engagingspaces.graphql.query.QueryResult;
   Generated Proxy code - DO NOT EDIT
   @author Roger the Robot
 */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class QueryableVertxEBProxy implements Queryable {
 
   private Vertx _vertx;

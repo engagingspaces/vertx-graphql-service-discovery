@@ -14,11 +14,11 @@
 ^|Name | Type ^| Description
 |[[column]]`column`|`Number (int)`|
 +++
-@return the column where the error occurred
+
 +++
 |[[line]]`line`|`Number (int)`|
 +++
-@return the line where the error occurred
+
 +++
 |===
 
@@ -43,11 +43,11 @@ Gets the type of the graphql execution error.
 +++
 |[[locations]]`locations`|`Array of link:dataobjects.html#ErrorLocation[ErrorLocation]`|
 +++
-@return the location(s) where the error occurred (if applicable)
+
 +++
 |[[message]]`message`|`String`|
 +++
-@return the error message
+
 +++
 |===
 
@@ -77,7 +77,7 @@ Gets the errors that occurred on query execution, if the GraphQL query was not s
 +++
 |[[succeeded]]`succeeded`|`Boolean`|
 +++
-@return <code>true</code> when the query was successful, <code>false</code> otherwise
+
 +++
 |===
 
@@ -110,7 +110,7 @@ Gets the errors that occurred on query execution, if the GraphQL query was not s
 ^|Name | Type ^| Description
 |[[discoveryName]]`discoveryName`|`String`|
 +++
-@return the service discovery name
+
 +++
 |[[record]]`record`|`link:dataobjects.html#Record[Record]`|
 +++
