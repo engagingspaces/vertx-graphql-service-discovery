@@ -19,48 +19,50 @@ public class SchemaMetadata {
      */
     public static final String METADATA_MUTATIONS = "mutations";
 
-    private boolean async;
     private String schemaName;
     private String serviceAddress;
     private DeliveryOptions deliveryOptions;
+    private boolean exposeToGateway;
     private JsonObject metadata;
-
-    protected SchemaMetadata(JsonObject metadata, boolean async) {
-        this.metadata = metadata;
-        this.async = async;
-    }
 
     public SchemaMetadata(JsonObject json) {
         Objects.requireNonNull(json, "Json metadata cannot be null");
-        this.async = json.getBoolean("async");
         this.schemaName = json.getString("schemaName");
+        this.serviceAddress = json.getString("serviceAddress");
+        this.exposeToGateway = json.getBoolean("exposeToGateway");
         if (json.containsKey("deliveryOptions")) {
             this.deliveryOptions = new DeliveryOptions(json.getJsonObject("deliveryOptions"));
         }
         this.metadata = json.copy();
-        this.metadata.remove("async");
+        this.metadata.remove("exposeToGateway");
         this.metadata.remove("schemaName");
         this.metadata.remove("deliveryOptions");
-    }
-
-    public static SchemaMetadata create() {
-        return new SchemaMetadata(new JsonObject(), false);
     }
 
     /**
      * Creates a new schema metadata instance.
      *
+     * @return the schema metadata instance
+     */
+    public static SchemaMetadata create() {
+        return new SchemaMetadata(new JsonObject());
+    }
+
+    /**
+     * Creates a new schema metadata instance initialized with the provided additional metadata.
+     *
      * @param metadata   the additional custom metadata to pass to the service proxy
      * @return the schema metadata instance
      */
     public static SchemaMetadata create(JsonObject metadata) {
-        return new SchemaMetadata(metadata, false);
+        return new SchemaMetadata(metadata);
     }
 
     public JsonObject toJson() {
         JsonObject result = metadata.copy()
-                .put("async", async)
-                .put("schemaName", schemaName);
+                .put("schemaName", schemaName)
+                .put("serviceAddress", serviceAddress)
+                .put("exposeToGateway", exposeToGateway);
         if (deliveryOptions != null) {
             result.put("deliveryOptions", new JsonObject()
                     .put("codecName", deliveryOptions.getCodecName())
@@ -70,12 +72,12 @@ public class SchemaMetadata {
         return result;
     }
 
-    public boolean isAsync() {
-        return async;
+    public boolean exposeToGateway() {
+        return exposeToGateway;
     }
 
-    public SchemaMetadata setAsync(boolean async) {
-        this.async = async;
+    public SchemaMetadata setExposeToGateway(boolean expose) {
+        this.exposeToGateway = expose;
         return this;
     }
 
