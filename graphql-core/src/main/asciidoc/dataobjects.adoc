@@ -89,8 +89,8 @@ Gets the errors that occurred on query execution, if the GraphQL query was not s
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[async]]`async`|`Boolean`|-
 |[[deliveryOptions]]`deliveryOptions`|`link:dataobjects.html#DeliveryOptions[DeliveryOptions]`|-
+|[[exposeToGateway]]`exposeToGateway`|`Boolean`|-
 |[[schemaName]]`schemaName`|`String`|-
 |[[serviceAddress]]`serviceAddress`|`String`|-
 |===

@@ -29,7 +29,7 @@ public class SchemaMetadata {
         Objects.requireNonNull(json, "Json metadata cannot be null");
         this.schemaName = json.getString("schemaName");
         this.serviceAddress = json.getString("serviceAddress");
-        this.exposeToGateway = json.getBoolean("exposeToGateway");
+        this.exposeToGateway = json.getBoolean("exposeToGateway", false);
         if (json.containsKey("deliveryOptions")) {
             this.deliveryOptions = new DeliveryOptions(json.getJsonObject("deliveryOptions"));
         }
