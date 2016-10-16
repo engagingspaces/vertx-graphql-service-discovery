@@ -111,75 +111,48 @@ Publishers of a GraphQL schema need to add a dependency on `vertx-graphql-servic
 ```
 repositories {
   maven {
-    url "http://dl.bintray.com/engagingspaces/maven"
+    jcenter()
   }
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-service-publisher:0.9.2'
+  compile 'io.engagingspaces:vertx-graphql-service-publisher:0.9.5'
 }
 ```
 Consumers of a published GraphQL service that want to execute queries need a dependency on `vertx-graphql-service-consumer`:
 ```
 repositories {
   maven {
-    url "http://dl.bintray.com/engagingspaces/maven"
+    jcenter()
   }
 }
 
 dependencies {
-  compile 'io.engagingspaces:vertx-graphql-service-consumer:0.9.2'
+  compile 'io.engagingspaces:vertx-graphql-service-consumer:0.9.5'
 }
 ```
 ### Using with Maven
 
-In order to resolve the Bintray dependencies the following repository settings can be added to your `settings.xml`:
+In order to resolve the Bintray dependencies the following repository settings can be added to your `pom.xml`:
 ```
-<?xml version="1.0" encoding="UTF-8" ?>
-<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
-          xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-          xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
-                                  http://maven.apache.org/xsd/settings-1.0.0.xsd'>
-    <profiles>
-        <profile>
-            <repositories>
-                <repository>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>bintray-engagingspaces-maven</id>
-                    <name>bintray</name>
-                    <url>http://dl.bintray.com/engagingspaces/maven</url>
-                </repository>
-            </repositories>
-
-            <pluginRepositories>
-                <pluginRepository>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>bintray-engagingspaces-maven</id>
-                    <name>bintray-plugins</name>
-                    <url>http://dl.bintray.com/engagingspaces/maven</url>
-                </pluginRepository>
-            </pluginRepositories>
-            <id>bintray</id>
-        </profile>
-    </profiles>
-
-    <activeProfiles>
-        <activeProfile>bintray</activeProfile>
-    </activeProfiles>
-</settings>
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
 ```
-Or you can add the repository definition directly in your `pom.xml`.
 
 When using Maven a publisher of a GraphQL schema needs to add the following dependency to the `pom.xml`:
 ```
 <dependency>
     <groupId>io.engagingspaces</groupId>
     <artifactId>vertx-graphql-service-publisher</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.5</version>
 </dependency>
 ```
 And consumers of a GraphQL service need to add the `vertx-graphql-service-consumer` dependency to their `pom.xml`:
@@ -187,7 +160,7 @@ And consumers of a GraphQL service need to add the `vertx-graphql-service-consum
 <dependency>
     <groupId>io.engagingspaces</groupId>
     <artifactId>vertx-graphql-service-consumer</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.5</version>
 </dependency>
 ```
 
