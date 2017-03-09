@@ -199,8 +199,8 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
         CompositeFuture.all(futures).setHandler(rh -> {
             CompositeFuture composite = rh.result();
             for (int index = 0; index < composite.size(); index++) {
-                if (composite.succeeded(index) && composite.result(index) != null) {
-                    composite.<SchemaRegistration>result(index).unregisterServiceProxy();
+                if (composite.succeeded(index) && composite.resultAt(index) != null) {
+                    composite.<SchemaRegistration>resultAt(index).unregisterServiceProxy();
                 }
             }
             if (rh.succeeded()) {
