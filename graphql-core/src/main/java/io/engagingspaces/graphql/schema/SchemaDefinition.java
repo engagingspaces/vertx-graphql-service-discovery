@@ -125,6 +125,7 @@ public class SchemaDefinition implements Queryable {
     /**
      * Gets the address where the schema will be published.
      *
+     * @return the service address
      */
     public String serviceAddress() {
         return serviceAddress;
