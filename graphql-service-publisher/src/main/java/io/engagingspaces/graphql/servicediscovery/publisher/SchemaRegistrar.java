@@ -197,16 +197,17 @@ public class SchemaRegistrar extends AbstractRegistrar<SchemaRegistration> {
 
     private void handleCloseCompletion(Handler<AsyncResult<Void>> closeHandler, List<Future> futures) {
         CompositeFuture.all(futures).setHandler(rh -> {
-            CompositeFuture composite = rh.result();
-            for (int index = 0; index < composite.size(); index++) {
-                if (composite.succeeded(index) && composite.resultAt(index) != null) {
-                    composite.<SchemaRegistration>resultAt(index).unregisterServiceProxy();
-                }
-            }
             if (rh.succeeded()) {
+                CompositeFuture composite = rh.result();
+                for (int index = 0; index < composite.size(); index++) {
+                    if (composite.succeeded(index) && composite.resultAt(index) != null) {
+                        composite.<SchemaRegistration>resultAt(index).unregisterServiceProxy();
+                    }
+                }
                 doClose(closeHandler);
-            } else
+            } else {
                 closeHandler.handle(Future.failedFuture(rh.cause()));
+            }
         });
     }
 
