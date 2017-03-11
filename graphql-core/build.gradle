@@ -30,7 +30,7 @@ task generateProxies(type: JavaCompile) {
     options.compilerArgs = [
             "-proc:only",
             "-processor", "io.vertx.codegen.CodeGenProcessor",
-            "-AoutputDirectory=${projectDir}/src/main"
+            "-Acodegen.output=${projectDir}/src/main"
     ]
     destinationDir = file("${projectDir}/src/main/generated")
 }
