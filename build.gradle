@@ -36,6 +36,10 @@ subprojects {
     version = '0.9.6'
 
     sourceCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+    }
 }
 
 task wrapper(type: Wrapper) {
