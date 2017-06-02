@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
@@ -39,6 +39,6 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-    distributionUrl = "http://services.gradle.org/distributions/gradle-2.14-all.zip"
+    gradleVersion = '3.5'
+    distributionUrl = "http://services.gradle.org/distributions/gradle-3.5-all.zip"
 }
