@@ -33,7 +33,7 @@ subprojects {
     }
 
     group = 'io.engagingspaces'
-    version = '0.9.6'
+    version = '0.9.7'
 
     sourceCompatibility = 1.8
 
