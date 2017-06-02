@@ -17,7 +17,7 @@
 package io.engagingspaces.graphql.query;
 
 import graphql.ExecutionResult;
-import graphql.GraphQLError;
+import graphql.ExecutionResultImpl;
 import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
@@ -30,7 +30,6 @@ import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -42,20 +41,9 @@ import static org.junit.Assert.*;
 @RunWith(VertxUnitRunner.class)
 public class QueryResultTest {
 
-    private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResult() {
-
-        @Override
-        public Object getData() {
-            return MapBuilder.immutableMapOf(
-                    MapBuilder.<String, Object>entry("query-data", true)
-            );
-        }
-
-        @Override
-        public List<GraphQLError> getErrors() {
-            return Collections.emptyList();
-        }
-    };
+    private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResultImpl(MapBuilder.immutableMapOf(
+            MapBuilder.<String, Object>entry("query-data", true)
+    ), null);
 
     private static final QueryResult EXPECTED_SUCCESS = new QueryResult(new JsonObject(
             "{\n" +
@@ -67,21 +55,10 @@ public class QueryResultTest {
             "  ]\n" +
             "}"));
 
-    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResult() {
-
-        @Override
-        public Object getData() {
-            return null;
-        }
-
-        @Override
-        public List<GraphQLError> getErrors() {
-            return Arrays.asList(
-                    new ValidationError(ValidationErrorType.UnknownType, new SourceLocation(1, 1), "Error1"),
-                    new ValidationError(ValidationErrorType.WrongType,
-                            Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2"));
-        }
-    };
+    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResultImpl(null, Arrays.asList(
+            new ValidationError(ValidationErrorType.UnknownType, new SourceLocation(1, 1), "Error1"),
+            new ValidationError(ValidationErrorType.WrongType,
+                    Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2")));
 
     private static final QueryResult EXPECTED_FAILURE = new QueryResult(new JsonObject(
             "{\n" +
