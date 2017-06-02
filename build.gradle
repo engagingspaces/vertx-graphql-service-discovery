@@ -18,9 +18,9 @@ publishing {
 }
 
 ext {
-    vertxVersion = '3.4.0'
-    graphqlVersion = '2.3.0'
-
+    vertxVersion = '3.4.1'
+	graphqlAsyncVersion = '1.0.0'
+	graphqlVersion = '2.4.0'
     junitVersion = '4.12'
 }
 
@@ -30,6 +30,7 @@ subprojects {
     repositories {
         mavenCentral()
         jcenter()
+        maven { url  "http://dl.bintray.com/karthicks/graphql-java-async" }
     }
 
     group = 'io.engagingspaces'
