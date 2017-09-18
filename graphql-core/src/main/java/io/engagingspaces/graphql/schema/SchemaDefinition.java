@@ -16,6 +16,7 @@
 
 package io.engagingspaces.graphql.schema;
 
+import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLError;
@@ -33,6 +34,8 @@ import io.vertx.core.json.JsonObject;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -93,8 +96,7 @@ public class SchemaDefinition implements Queryable {
     public void queryWithVariables(String graphqlQuery, JsonObject variables,
                                     Handler<AsyncResult<QueryResult>> resultHandler) {
         try {
-            QueryResult result = queryBlocking(graphqlQuery, variables);
-            resultHandler.handle(Future.succeededFuture(result));
+            queryNonBlocking(graphqlQuery, variables, resultHandler);
         } catch (RuntimeException ex) {
             resultHandler.handle(Future.failedFuture(ex));
         }
@@ -157,6 +159,41 @@ public class SchemaDefinition implements Queryable {
             result = graphQL.execute(graphqlQuery, (Object) null, variables.getMap());
         }
         return convertToQueryResult(result);
+    }
+    
+    /**
+     * Executes a non blocking call to the GraphQL query processor and executes the query.
+     *
+     * @param graphqlQuery the graphql query
+     * @param variables    the variables to pass to the query
+     * @return a completeableFuture with graphql query result
+     */
+    public void queryNonBlocking(String graphqlQuery, JsonObject variables, Handler<AsyncResult<QueryResult>> resultHandler) {
+        Objects.requireNonNull(graphqlQuery, "GraphQL query cannot be null");
+        
+        GraphQL graphQL = new GraphQL.Builder(schema()).build();
+        
+        ExecutionInput.Builder asyncExecBuilder = ExecutionInput.newExecutionInput().query(graphqlQuery);
+        if (variables != null) {
+        		asyncExecBuilder.variables(variables.getMap());
+        }
+        
+        CompletableFuture<ExecutionResult> promise = graphQL.executeAsync(asyncExecBuilder.build());
+        
+        promise.thenAcceptAsync(new Consumer<ExecutionResult>() {
+
+			@Override
+			public void accept(ExecutionResult result) {
+				try {
+					QueryResult queryResult = convertToQueryResult(result);
+					 
+					resultHandler.handle(Future.succeededFuture(queryResult));
+				} catch (Exception e) {
+					resultHandler.handle(Future.failedFuture(e));
+				}
+				
+			}
+		});        
     }
 
     /**

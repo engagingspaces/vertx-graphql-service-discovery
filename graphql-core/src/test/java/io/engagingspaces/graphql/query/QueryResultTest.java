@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -55,6 +56,18 @@ public class QueryResultTest {
         public List<GraphQLError> getErrors() {
             return Collections.emptyList();
         }
+
+		@Override
+		public Map<Object, Object> getExtensions() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Map<String, Object> toSpecification() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     };
 
     private static final QueryResult EXPECTED_SUCCESS = new QueryResult(new JsonObject(
@@ -81,6 +94,18 @@ public class QueryResultTest {
                     new ValidationError(ValidationErrorType.WrongType,
                             Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2"));
         }
+
+		@Override
+		public Map<Object, Object> getExtensions() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Map<String, Object> toSpecification() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     };
 
     private static final QueryResult EXPECTED_FAILURE = new QueryResult(new JsonObject(
