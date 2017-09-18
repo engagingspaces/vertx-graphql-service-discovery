@@ -45,33 +45,8 @@ import static org.junit.Assert.*;
 @RunWith(VertxUnitRunner.class)
 public class QueryResultTest {
 
-    private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResult() {
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public Object getData() {
-            return MapBuilder.immutableMapOf(
-                    MapBuilder.<String, Object>entry("query-data", true)
-            );
-        }
-
-        @Override
-        public List<GraphQLError> getErrors() {
-            return Collections.emptyList();
-        }
-
-		@Override
-		public Map<Object, Object> getExtensions() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Map<String, Object> toSpecification() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-    };
+    private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResultImpl(MapBuilder.immutableMapOf(
+            MapBuilder.<String, Object>entry("query-data", true)), null);
 
 
     private static final QueryResult EXPECTED_SUCCESS = new QueryResult(new JsonObject(
@@ -84,34 +59,10 @@ public class QueryResultTest {
             "  ]\n" +
             "}"));
 
-    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResult() {
-
-        @SuppressWarnings("unchecked")
-		@Override
-        public Object getData() {
-            return null;
-        }
-
-        @Override
-        public List<GraphQLError> getErrors() {
-            return Arrays.asList(
+    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResultImpl(Arrays.asList(
                     new ValidationError(ValidationErrorType.UnknownType, new SourceLocation(1, 1), "Error1"),
                     new ValidationError(ValidationErrorType.WrongType,
-                            Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2"));
-        }
-
-		@Override
-		public Map<Object, Object> getExtensions() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Map<String, Object> toSpecification() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-    };
+                            Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2")));
 
 
     private static final QueryResult EXPECTED_FAILURE = new QueryResult(new JsonObject(
