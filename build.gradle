@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
@@ -21,6 +21,7 @@ ext {
     vertxVersion = '3.4.2'
     graphqlVersion = '4.2'
 
+
     junitVersion = '4.12'
 }
 
@@ -33,12 +34,16 @@ subprojects {
     }
 
     group = 'io.engagingspaces'
-    version = '0.9.6'
+    version = '0.9.7'
 
     sourceCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+    }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-    distributionUrl = "http://services.gradle.org/distributions/gradle-2.14-all.zip"
+    gradleVersion = '3.5'
+    distributionUrl = "http://services.gradle.org/distributions/gradle-3.5-all.zip"
 }

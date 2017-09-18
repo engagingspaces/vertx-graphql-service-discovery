@@ -17,7 +17,7 @@
 package io.engagingspaces.graphql.query;
 
 import graphql.ExecutionResult;
-import graphql.GraphQLError;
+import graphql.ExecutionResultImpl;
 import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 
 import static org.junit.Assert.*;
 
@@ -70,6 +71,7 @@ public class QueryResultTest {
 		}
     };
 
+
     private static final QueryResult EXPECTED_SUCCESS = new QueryResult(new JsonObject(
             "{\n" +
             "  \"data\": {\n" +
@@ -107,6 +109,7 @@ public class QueryResultTest {
 			return null;
 		}
     };
+
 
     private static final QueryResult EXPECTED_FAILURE = new QueryResult(new JsonObject(
             "{\n" +
