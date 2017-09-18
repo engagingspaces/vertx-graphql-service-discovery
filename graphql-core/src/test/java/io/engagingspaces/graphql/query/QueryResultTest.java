@@ -47,7 +47,8 @@ public class QueryResultTest {
 
     private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResult() {
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public Object getData() {
             return MapBuilder.immutableMapOf(
                     MapBuilder.<String, Object>entry("query-data", true)
@@ -85,7 +86,8 @@ public class QueryResultTest {
 
     private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResult() {
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public Object getData() {
             return null;
         }
