@@ -166,7 +166,7 @@ public class SchemaDefinition implements Queryable {
      *
      * @param graphqlQuery the graphql query
      * @param variables    the variables to pass to the query
-     * @return a completeableFuture with graphql query result
+     * @param resultHandler vertx result handler 
      */
     public void queryNonBlocking(String graphqlQuery, JsonObject variables, Handler<AsyncResult<QueryResult>> resultHandler) {
         Objects.requireNonNull(graphqlQuery, "GraphQL query cannot be null");
