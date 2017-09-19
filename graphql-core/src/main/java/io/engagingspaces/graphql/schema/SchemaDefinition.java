@@ -180,7 +180,7 @@ public class SchemaDefinition implements Queryable {
         
         CompletableFuture<ExecutionResult> promise = graphQL.executeAsync(asyncExecBuilder.build());
         
-        promise.thenAcceptAsync(new Consumer<ExecutionResult>() {
+        promise.thenAccept(new Consumer<ExecutionResult>() {
 
 			@Override
 			public void accept(ExecutionResult result) {

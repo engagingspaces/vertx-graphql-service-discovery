@@ -55,8 +55,8 @@ public class GraphQLClientTest {
             "        }";
 
     private static final String DROIDS_VARIABLES_QUERY =
-            "        query GetDroidNameR2(\\$id: String!) {\n" +
-            "            droid(id: \\$id) {\n" +
+            "        query GetDroidNameR2($id: String!) {\n" +
+            "            droid(id: $id) {\n" +
             "                name\n" +
             "            }\n" +
             "        }";
