@@ -35,8 +35,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import graphql.ExecutionInput;
+import graphql.ExecutionResult;
+import graphql.GraphQL;
+import graphql.Scalars;
+import graphql.schema.GraphQLArgument;
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLNonNull;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLSchema;
+
 import static org.example.graphql.testdata.droids.DroidsSchema.droidsSchema;
 import static org.junit.Assert.*;
+
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * Tests for the {@link GraphQLClient}.
@@ -55,8 +69,8 @@ public class GraphQLClientTest {
             "        }";
 
     private static final String DROIDS_VARIABLES_QUERY =
-            "        query GetDroidNameR2(\\$id: String!) {\n" +
-            "            droid(id: \\$id) {\n" +
+            "        query GetDroidNameR2($id: String!) {\n" +
+            "            droid(id: $id) {\n" +
             "                name\n" +
             "            }\n" +
             "        }";
@@ -148,9 +162,76 @@ public class GraphQLClientTest {
         GraphQLClient.executeQuery(discovery, record, DROIDS_VARIABLES_QUERY, variables,
                 context.asyncAssertFailure(ex -> {
                     assertNotNull(ex.getMessage());
-                    assertTrue(ex.getMessage().startsWith("Null value for NonNull type GraphQLNonNull"));
+                    assertTrue(ex.getMessage().startsWith("Variable 'id' has coerced Null value for NonNull type 'String!'"));
                 }));
     }
+    
+    @Test
+	public void testSchemaValidation(TestContext context) {
+		
+        Async async = context.async();
+
+		GraphQLObjectType droidType = GraphQLObjectType.newObject()
+	            .name("Droid")
+	            .description("A mechanical creature in the Star Wars universe.")
+	            .field(GraphQLFieldDefinition.newFieldDefinition()
+	                    .name("id")
+	                    .description("The id of the droid.")
+	                    .type(new GraphQLNonNull(Scalars.GraphQLString))
+	                    .build()).build();
+		
+		
+		GraphQLObjectType query = GraphQLObjectType.newObject()
+	            .name("DroidQueries")
+	            .field(GraphQLFieldDefinition.newFieldDefinition()
+	                    .name("droid")
+	                    .type(droidType)
+	                    .argument(GraphQLArgument.newArgument()
+	                            .name("id")
+	                            .description("id of the droid")
+	                            .type(new GraphQLNonNull(Scalars.GraphQLString))
+	                            .build())
+	                    .build())
+	            .build();
+		
+		GraphQLSchema schema = GraphQLSchema.newSchema()
+	            .query(query)
+	            .build();
+		
+		String DROIDS_VARIABLES_QUERY =
+	            "        query GetDroidNameR2($id: String!) {\n" +
+	            "            droid(id: $id) {\n" +
+	            "                id\n" +
+	            "            }\n" +
+	            "        }";
+		
+		GraphQL graphQL = new GraphQL.Builder(schema).build();
+		
+		ExecutionInput.Builder asyncExecBuilder = ExecutionInput.newExecutionInput().query(DROIDS_VARIABLES_QUERY);
+		
+		HashMap<String, Object> variables = new HashMap<String, Object>();
+		variables.put("nonsense", "xxx");
+		
+		asyncExecBuilder.variables(variables);
+                
+		try {
+        CompletableFuture<ExecutionResult> promise = graphQL.executeAsync(asyncExecBuilder.build());
+        
+        promise.thenAccept(new Consumer<ExecutionResult>() {
+
+			@Override
+			public void accept(ExecutionResult result) {
+				context.assertFalse(true);
+				
+				async.complete();
+				
+
+		}});
+		} catch (Exception e ) {
+			context.assertTrue(true);
+			async.complete();
+		}
+	}
 
     @Test
     public void should_Find_Service_Proxy_From_Valid_Filter(TestContext context) {

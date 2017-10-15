@@ -18,8 +18,9 @@ publishing {
 }
 
 ext {
-    vertxVersion = '3.4.0'
-    graphqlVersion = '2.4.0'
+    vertxVersion = '3.4.2'
+    graphqlVersion = '5.0'
+
 
     junitVersion = '4.12'
 }

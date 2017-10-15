@@ -18,6 +18,7 @@ package io.engagingspaces.graphql.query;
 
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
+import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import graphql.validation.ValidationError;
 import graphql.validation.ValidationErrorType;
@@ -30,6 +31,9 @@ import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 
 import static org.junit.Assert.*;
 
@@ -42,8 +46,8 @@ import static org.junit.Assert.*;
 public class QueryResultTest {
 
     private static final ExecutionResult QUERY_RESULT_SUCCESS = new ExecutionResultImpl(MapBuilder.immutableMapOf(
-            MapBuilder.<String, Object>entry("query-data", true)
-    ), null);
+            MapBuilder.<String, Object>entry("query-data", true)), null);
+
 
     private static final QueryResult EXPECTED_SUCCESS = new QueryResult(new JsonObject(
             "{\n" +
@@ -55,10 +59,11 @@ public class QueryResultTest {
             "  ]\n" +
             "}"));
 
-    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResultImpl(null, Arrays.asList(
-            new ValidationError(ValidationErrorType.UnknownType, new SourceLocation(1, 1), "Error1"),
-            new ValidationError(ValidationErrorType.WrongType,
-                    Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2")));
+    private static final ExecutionResult QUERY_RESULT_FAILURE = new ExecutionResultImpl(Arrays.asList(
+                    new ValidationError(ValidationErrorType.UnknownType, new SourceLocation(1, 1), "Error1"),
+                    new ValidationError(ValidationErrorType.WrongType,
+                            Arrays.asList(new SourceLocation(2, 2), new SourceLocation(3, 3)), "Error2")));
+
 
     private static final QueryResult EXPECTED_FAILURE = new QueryResult(new JsonObject(
             "{\n" +
