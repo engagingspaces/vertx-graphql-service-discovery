@@ -47,3 +47,14 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
     distributionUrl = "http://services.gradle.org/distributions/gradle-3.5-all.zip"
 }
+
+allprojects {
+    tasks.withType(Test).configureEach {
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+        if (!project.hasProperty("createReports")) {
+            reports.html.required = false
+            reports.junitXml.required = false
+        }
+    }
+
+}
